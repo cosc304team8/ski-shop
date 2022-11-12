@@ -18,22 +18,21 @@ services:
         ports:
             - 80:3000
     db:
-        image: mcr.microsoft.com/azure-sql-edge:latest
-        container_name: mssql
+        image: mysql:8.0
+        container_name: mysql
         restart: always
         environment:
-            ACCEPT_EULA: "Y"
-            SA_PASSWORD: "YourStrong@Passw0rd"
+            MYSQL_DATABASE: "testuser"
+            MYSQL_USER: "testuser"
+            MYSQL_PASSWORD: "304testpw"
+            MYSQL_ROOT_PASSWORD: "304rootpw"
         ports:
-            - "1433:1433"
+            - "3306:3306"
         expose:
-            - "1433"
+            - "3306"
         volumes:
-            - cosc304-db:/var/lib/mssql
-        networks:
-            node-network:
-                aliases:
-                    - cosc304-db
+            - cosc304-db:/var/lib/mysql
+            - ./ddl:/docker-entrypoint-initdb.d
 volumes:
     cosc304-db:
 networks:
