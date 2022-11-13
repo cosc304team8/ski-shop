@@ -19,14 +19,10 @@ const STORE_TITLE = "Kelowna Alpine";
 
 // This DB Config is accessible globally
 dbConfig = {
-    user: "SA",
-    password: "YourStrong@Passw0rd",
-    server: "db",
-    database: "tempdb",
-    options: {
-        enableArithAbort: true,
-        encrypt: false,
-    },
+    host: "localhost",
+    user: "root",
+    password: "304rootpw",
+    database: "shopdb",
 };
 
 // Setting up the session.
@@ -34,7 +30,7 @@ dbConfig = {
 // recommended for production use.
 app.use(
     session({
-        secret: "COSC 304 Rules!",
+        secret: "COSC 304 smells (good)",
         resave: false,
         saveUninitialized: false,
         cookie: {

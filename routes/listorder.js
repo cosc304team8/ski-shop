@@ -10,31 +10,47 @@ router.get("/", function (req, res, next) {
 
     /** Create connection, and validate that it connected successfully **/
     const listOrder = async () => {
+        res.write("<h1>Order List</h1>");
+        res.write("<table border=1>");
+        res.write(
+            "<tr><th>Order ID</th><th>Customer ID</th><th>Order Date</th><th>Order Total</th></tr>"
+        );
         try {
-            let pool = await sql.connect(req.app.get("dbConfig"));
+            let pool = await sql.createConnection(req.app.get("dbConfig"));
+            pool.connect();
 
-            let result = await pool.request().query("select * from dbo.order");
-
-            res.write("<h1>Order List</h1>");
-            res.write("<table border=1>");
-            res.write(
-                "<tr><th>Order ID</th><th>Customer ID</th><th>Order Date</th><th>Order Total</th></tr>"
+            let results = await pool.query(
+                "select * from dbo.order",
+                (error, results, fields) => {
+                    if (error) {
+                        throw error;
+                    }
+                    return results;
+                }
             );
-            for (let i = 0; i < result.recordset.length; i++) {
-                res.write(
-                    `<tr><td>${result.recordset[i].orderID}</td><td>${
-                        result.recordset[i].custID
-                    }</td><td>${moment(result.recordset[i].orderDate).format(
-                        "YYYY-MM-DD"
-                    )}</td><td>${result.recordset[i].orderTotal}</td></tr>`
-                );
+
+            let tableRows = "";
+            for (let i = 0; i < results.length; i++) {
+                tableRows += "<tr>";
+                for (let j = 0; j < results[i].length; j++) {
+                    tableRows += "<td>" + results[i][j] + "</td>";
+                }
+                // res.write(
+                //     `<tr><td>${results[i].orderID}</td><td>${
+                //         results[i].custID
+                //     }</td><td>${moment(results[i].orderDate).format(
+                //         "YYYY-MM-DD"
+                //     )}</td><td>${results[i].orderTotal}</td></tr>`
+                // );
+                tableRows += "</tr>";
             }
-            res.write("</table>");
-            res.end();
+            res.write(tableRows);
+            pool.end();
         } catch (err) {
             console.dir(err);
         } finally {
-            sql.close();
+            res.write("</table>");
+            res.end();
         }
     };
     listOrder();
