@@ -1,10 +1,15 @@
-const express = require('express');
-const router = express.Router();
-const sql = require('mssql');
-const moment = require('moment');
+// const express = require('express');
+// const sql = require('mysql');
+// const moment = require('moment');
 
-router.get('/', function(req, res, next) {
-    res.setHeader('Content-Type', 'text/html');
+import express from "express";
+import sql from "mysql";
+import moment from "moment";
+
+export const router = express.Router();
+
+router.get("/", function (req, res, next) {
+    res.setHeader("Content-Type", "text/html");
     res.write("<title>YOUR NAME Grocery Order Processing</title>");
 
     let productList = false;
@@ -22,8 +27,7 @@ router.get('/', function(req, res, next) {
 
     /** Save order information to database**/
 
-
-        /**
+    /**
         // Use retrieval of auto-generated keys.
         sqlQuery = "INSERT INTO <TABLE> OUTPUT INSERTED.orderId VALUES( ... )";
         let result = await pool.request()
@@ -56,4 +60,5 @@ router.get('/', function(req, res, next) {
     res.end();
 });
 
-module.exports = router;
+export default router;
+// module.exports = router;

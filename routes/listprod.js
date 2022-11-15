@@ -1,14 +1,18 @@
-const express = require('express');
-const router = express.Router();
-const sql = require('mssql');
+// const express = require('express');
+// const sql = require('mysql');
 
-router.get('/', function(req, res, next) {
-    res.setHeader('Content-Type', 'text/html');
-    res.write("<title>YOUR NAME Grocery</title>")
+import express from "express";
+import sql from "mysql";
+
+export const router = express.Router();
+
+router.get("/", function (req, res, next) {
+    res.setHeader("Content-Type", "text/html");
+    res.write("<title>YOUR NAME Grocery</title>");
 
     // Get the product name to search for
     let name = req.query.productName;
-    
+
     /** $name now contains the search string the user entered
      Use it to build a query and print out the results. **/
 
@@ -30,4 +34,5 @@ router.get('/', function(req, res, next) {
     res.end();
 });
 
-module.exports = router;
+export default router;
+// module.exports = router;

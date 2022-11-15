@@ -1,8 +1,14 @@
-const express = require("express");
-const router = express.Router();
-const sql = require("mysql");
-const moment = require("moment");
-const sv = require("../server");
+// const express = require("express");
+// const sql = require("mysql");
+// const moment = require("moment");
+// const sv = require("../server");
+
+import express from "express";
+import sql from "mysql";
+import moment from "moment";
+import * as sv from "../server.js";
+
+export const router = express.Router();
 
 router.get("/", function (req, res, next) {
     res.setHeader("Content-Type", "text/html");
@@ -16,18 +22,16 @@ router.get("/", function (req, res, next) {
             "<tr><th>Order ID</th><th>Customer ID</th><th>Order Date</th><th>Order Total</th></tr>"
         );
         try {
+            let q = "";
             let pool = await sql.createConnection(req.app.get("dbConfig"));
             pool.connect();
 
-            let results = await pool.query(
-                "select * from dbo.order",
-                (error, results, fields) => {
-                    if (error) {
-                        throw error;
-                    }
-                    return results;
+            let results = await pool.query(q, (error, results, fields) => {
+                if (error) {
+                    throw error;
                 }
-            );
+                return results;
+            });
 
             let tableRows = "";
             for (let i = 0; i < results.length; i++) {
@@ -73,4 +77,5 @@ router.get("/", function (req, res, next) {
     res.end();
 });
 
-module.exports = router;
+export default router;
+// module.exports = router;

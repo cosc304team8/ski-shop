@@ -1,8 +1,10 @@
-const express = require('express');
-const router = express.Router();
+// const express = require("express");
+import express from "express";
 
-router.get('/', function(req, res, next) {
-    res.setHeader('Content-Type', 'text/html');
+export const router = express.Router();
+
+router.get("/", function (req, res, next) {
+    res.setHeader("Content-Type", "text/html");
     // If the product list isn't set in the session,
     // create a new list.
     let productList = false;
@@ -26,14 +28,14 @@ router.get('/', function(req, res, next) {
     }
 
     // Update quantity if add same item to order again
-    if (productList[id]){
+    if (productList[id]) {
         productList[id].quantity = productList[id].quantity + 1;
     } else {
         productList[id] = {
-            "id": id,
-            "name": name,
-            "price": price,
-            "quantity": 1
+            id: id,
+            name: name,
+            price: price,
+            quantity: 1,
         };
     }
 
@@ -41,4 +43,5 @@ router.get('/', function(req, res, next) {
     res.redirect("/showcart");
 });
 
-module.exports = router;
+export default router;
+// module.exports = router;

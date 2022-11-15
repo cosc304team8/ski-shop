@@ -1,7 +1,15 @@
-const express = require("express");
-const router = express.Router();
-const sql = require("mysql");
-const fs = require("fs");
+// const express = require("express");
+// const router = express.Router();
+// const sql = require("mysql");
+// const fs = require("fs");
+
+import express from "express";
+import sql from "mysql";
+import moment from "moment";
+import fs from "fs";
+import * as sv from "../server.js";
+
+export const router = express.Router();
 
 router.get("/", function (req, res, next) {
     (async function () {
@@ -30,7 +38,8 @@ router.get("/", function (req, res, next) {
                         return results;
                     }
                 );
-                res.write(`<p>${i}. <code>${result.sql}</code></p>`);
+                if (result)
+                    res.write(`<p>${i}. <code>${result.sql}</code></p>`);
             }
             pool.end();
 
@@ -44,4 +53,5 @@ router.get("/", function (req, res, next) {
     })();
 });
 
-module.exports = router;
+export default router;
+// module.exports = router;
