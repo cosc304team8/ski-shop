@@ -2,7 +2,7 @@
 // const sql = require('mysql');
 
 import express from "express";
-import sql from "mysql";
+import sql from "mysql2";
 
 export const router = express.Router();
 

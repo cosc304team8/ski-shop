@@ -1,10 +1,10 @@
 // const express = require("express");
-// const sql = require("mysql");
+// const sql = require("mysql2");
 // const moment = require("moment");
 // const sv = require("../server");
 
 import express from "express";
-import sql from "mysql";
+import sql from "mysql2";
 import moment from "moment";
 import * as sv from "../server.js";
 
@@ -15,49 +15,11 @@ router.get("/", function (req, res, next) {
     res.write(`<title>${req.app.get("storeName")} Grocery Order List</title>`);
 
     /** Create connection, and validate that it connected successfully **/
-    const listOrder = async () => {
-        res.write("<h1>Order List</h1>");
-        res.write("<table border=1>");
-        res.write(
-            "<tr><th>Order ID</th><th>Customer ID</th><th>Order Date</th><th>Order Total</th></tr>"
-        );
-        try {
-            let q = "";
-            let pool = await sql.createConnection(req.app.get("dbConfig"));
-            pool.connect();
-
-            let results = await pool.query(q, (error, results, fields) => {
-                if (error) {
-                    throw error;
-                }
-                return results;
-            });
-
-            let tableRows = "";
-            for (let i = 0; i < results.length; i++) {
-                tableRows += "<tr>";
-                for (let j = 0; j < results[i].length; j++) {
-                    tableRows += "<td>" + results[i][j] + "</td>";
-                }
-                // res.write(
-                //     `<tr><td>${results[i].orderID}</td><td>${
-                //         results[i].custID
-                //     }</td><td>${moment(results[i].orderDate).format(
-                //         "YYYY-MM-DD"
-                //     )}</td><td>${results[i].orderTotal}</td></tr>`
-                // );
-                tableRows += "</tr>";
-            }
-            res.write(tableRows);
-            pool.end();
-        } catch (err) {
-            console.dir(err);
-        } finally {
-            res.write("</table>");
-            res.end();
-        }
-    };
-    listOrder();
+    try {
+        let con = sql.createConnection(req.app.get("dbConfig"));
+    } catch (err) {
+        console.log(err);
+    }
     /**
     Useful code for formatting currency:
         let num = 2.87879778;

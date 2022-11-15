@@ -11,7 +11,7 @@
 // let order = require("./routes/order");
 
 import express from "express";
-import exphbs from "express-handlebars";
+import exphb from "express-handlebars";
 import session from "express-session";
 
 import * as loadData from "./routes/loaddata.js";
@@ -24,6 +24,7 @@ import * as checkout from "./routes/checkout.js";
 import * as order from "./routes/order.js";
 
 export const app = express();
+const { engine } = exphb;
 
 /**
  * Global Variables
@@ -32,7 +33,7 @@ const STORE_TITLE = "Kelowna Alpine";
 
 // This DB Config is accessible globally
 export const dbConfig = {
-    host: "localhost",
+    host: "host.docker.internal",
     user: "root",
     password: "304rootpw",
     database: "shopdb",
@@ -55,7 +56,7 @@ app.use(
 );
 
 // Setting up the rendering engine
-app.engine("handlebars", exphbs());
+app.engine("handlebars", engine());
 app.set("view engine", "handlebars");
 
 // Set up middleware and variables

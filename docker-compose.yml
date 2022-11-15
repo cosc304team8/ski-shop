@@ -1,26 +1,9 @@
 version: "3.7"
 services:
-    node:
-        build:
-            context: ./
-            dockerfile: Dockerfile
-        image: node-app
-        depends_on:
-            - db
-        container_name: node-app
-        volumes:
-            - ./:/app/
-            - /app/node_modules
-        networks:
-            node-network:
-                aliases:
-                    - node-app
-        ports:
-            - 80:3000
-    db:
+    mysqldb:
         image: mysql:8.0
         container_name: mysql
-        restart: always
+        restart: unless-stopped
         environment:
             MYSQL_DATABASE: "testuser"
             MYSQL_USER: "testuser"
@@ -33,6 +16,24 @@ services:
         volumes:
             - cosc304-db:/var/lib/mysql
             - ./ddl:/docker-entrypoint-initdb.d
+    node:
+        depends_on:
+            - mysqldb
+        build:
+            context: ./
+            dockerfile: Dockerfile
+        image: node-app
+        container_name: node-app
+        volumes:
+            - ./:/app/
+            - /app/node_modules
+        networks:
+            node-network:
+                aliases:
+                    - node-app
+        ports:
+            - 80:3000
+        tty: true
 volumes:
     cosc304-db:
 networks:

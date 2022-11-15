@@ -8,18 +8,17 @@
         "start": "nodemon server.js",
         "test": "echo \"Error: no test specified\" && exit 1"
     },
-    "author": "",
+    "author": "COSC 304 Team 8 2022W1",
     "license": "ISC",
     "dependencies": {
-        "express": "^4.17.1",
-        "express-handlebars": "^5.1.0",
-        "express-session": "^1.17.1",
+        "express": "^4.18.2",
+        "express-handlebars": "^6.0.6",
+        "express-session": "^1.17.3",
         "fs": "^0.0.1-security",
-        "moment": "^2.28.0",
-        "mssql": "^6.2.1",
-        "mysql": "^2.18.1",
-        "nodemon": "^2.0.4",
-        "tedious": "^9.2.1"
+        "moment": "^2.29.4",
+        "mysql2": "^2.3.3",
+        "nodemon": "^2.0.20",
+        "tedious": "^15.1.1"
     },
     "type": "module"
 }
