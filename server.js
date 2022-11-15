@@ -13,6 +13,11 @@
 import express from "express";
 import exphb from "express-handlebars";
 import session from "express-session";
+import sql from "mysql2/promise";
+import path from "path";
+import { fileURLToPath } from "url";
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 import * as loadData from "./routes/loaddata.js";
 import * as listOrder from "./routes/listorder.js";
@@ -29,7 +34,7 @@ const { engine } = exphb;
 /**
  * Global Variables
  */
-const STORE_TITLE = "Kelowna Alpine";
+export const STORE_TITLE = "Kelowna Alpine";
 
 // This DB Config is accessible globally
 export const dbConfig = {
@@ -37,6 +42,49 @@ export const dbConfig = {
     user: "root",
     password: "304rootpw",
     database: "shopdb",
+};
+
+/**
+ * HTML Table Generator for MySQL
+ */
+export const tableFromQuery = async (query, res) => {
+    const conn = await sql.createPool({
+        ...dbConfig,
+        waitForConnections: true,
+        connectionLimit: 10,
+        queueLimit: 0,
+    });
+
+    let [rows] = await conn.query(query);
+    let out = [];
+
+    res.write("<table>");
+    for (let i = 0; i < rows.length; i++) {
+        let r = rows[i];
+        let keys = Object.keys(r);
+
+        if (i === 0) {
+            res.write("<tr>");
+            for (let k of keys) {
+                res.write(`<th>${k}</th>`);
+            }
+            res.write("</tr>");
+        }
+
+        res.write("<tr>");
+        // console.log(`r = ${r}`);
+        for (let k of keys) {
+            // console.log(`\t${k} = ${r[k]}`);
+            res.write(`<td>${r[k]}</td>`);
+        }
+        res.write("</tr>");
+        // console.log(r, keys);
+        // res.write(
+        //     `<p>${JSON.stringify(r, null, 4).replace(/\n/g, "<br/>")}</p>`
+        // );
+    }
+
+    res.write("</table>");
 };
 
 // Setting up the session.
@@ -60,8 +108,11 @@ app.engine("handlebars", engine());
 app.set("view engine", "handlebars");
 
 // Set up middleware and variables
-app.set("storeName", STORE_TITLE);
-app.set("dbConfig", dbConfig);
+// app.set("storeName", STORE_TITLE);
+// app.set("dbConfig", dbConfig);
+
+// Set up CSS
+app.use(express.static(path.join(__dirname, "public")));
 
 // Setting up Express.js routes.
 // These present a "route" on the URL of the site.

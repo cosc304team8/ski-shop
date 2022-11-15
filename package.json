@@ -18,6 +18,7 @@
         "moment": "^2.29.4",
         "mysql2": "^2.3.3",
         "nodemon": "^2.0.20",
+        "path": "^0.12.7",
         "tedious": "^15.1.1"
     },
     "type": "module"
