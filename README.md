@@ -93,4 +93,4 @@ git push
 
 ### Merging Changes
 
-When you're ready to merge your changes into the `main` branch, you should create a pull request. This can be done by going to the GitHub page for the project and clicking the "New pull request" button. You can then select the branch you want to merge into `main` and create the pull request.
+When you're ready to merge your changes into the `main` branch, you should [create a pull request](https://github.com/cosc304team8/ski-shop/pulls). This can be done by going to the GitHub page for the project and clicking the "New pull request" button. You can then select the branch you want to merge into `main` and create the pull request.
