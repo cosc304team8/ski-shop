@@ -8,7 +8,6 @@ export const router = express.Router();
 router.get("/", function (req, res, next) {
     res.setHeader("Content-Type", "text/html");
     res.write(`<title>${sv.STORE_TITLE} Grocery Order List</title>`);
-    res.write(`<link rel="stylesheet" href="/css/style.css">`);
 
     /** Create connection, and validate that it connected successfully **/
     try {
@@ -24,6 +23,11 @@ router.get("/", function (req, res, next) {
         let num = 2.87879778;
         num = num.toFixed(2);
     **/
+    const priceFormatter = new Intl.NumberFormat("en-CA", {
+        style: "currency",
+        currency: "CAD",
+    });
+    // priceFormatter.format(2.87879778); // "$2.88"
 
     /** Write query to retrieve all order headers **/
 

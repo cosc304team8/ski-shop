@@ -1,5 +1,3 @@
-// const express = require('express');
-
 import express from "express";
 
 export const router = express.Router();
@@ -12,29 +10,31 @@ router.get("/", function (req, res, next) {
         productList = req.session.productList;
         res.write("<h1>Your Shopping Cart</h1>");
         res.write(
-            "<table><tr><th>Product Id</th><th>Product Name</th><th>Quantity</th>"
+            `<table class="table"><tr><th class="hcell">Product Id</th><th class="hcell">Product Name</th><th class="hcell">Quantity</th>`
         );
-        res.write("<th>Price</th><th>Subtotal</th></tr>");
+        res.write(
+            `<th class="hcell">Price</th><th class="hcell">Subtotal</th></tr>`
+        );
 
         let total = 0;
         for (let i = 0; i < productList.length; i++) {
-            product = productList[i];
+            let product = productList[i];
             if (!product) {
                 continue;
             }
 
-            res.write("<tr><td>" + product.id + "</td>");
+            res.write(`<tr><td class="cell">product.id</td>`);
             res.write("<td>" + product.name + "</td>");
 
-            res.write('<td align="center">' + product.quantity + "</td>");
+            res.write('<td class="cell">' + product.quantity + "</td>");
 
             res.write(
-                '<td align="right">$' +
+                '<td  class="cell">$' +
                     Number(product.price).toFixed(2) +
                     "</td>"
             );
             res.write(
-                '<td align="right">$' +
+                '<td class="cell">$' +
                     (
                         Number(product.quantity.toFixed(2)) *
                         Number(product.price)
@@ -45,7 +45,7 @@ router.get("/", function (req, res, next) {
             total = total + product.quantity * product.price;
         }
         res.write(
-            '<tr><td colspan="4" align="right"><b>Order Total</b></td><td align="right">$' +
+            '<tr><td  class="cell" colspan="4" align="right"><b>Order Total</b></td><td align="right">$' +
                 total.toFixed(2) +
                 "</td></tr>"
         );

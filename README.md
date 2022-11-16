@@ -62,7 +62,7 @@ If you're having connection issues, delete existing docker containers and try th
 
 When you work on a feature, you should use a different git branch.
 
-This helps keep changes from snowballing the project into being dysfunctional and makes it easier to merge changes into the `main` branch.
+This helps keep changes from snowballing out of control and makes it easier to merge changes into the `main` branch.
 
 The easiest way to make a branch and start using it is to run:
 
