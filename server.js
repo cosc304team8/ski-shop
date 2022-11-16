@@ -23,10 +23,10 @@ import * as loadData from "./routes/loaddata.js";
 import * as listOrder from "./routes/listorder.js";
 import * as listProd from "./routes/listprod.js";
 import * as addCart from "./routes/addcart.js";
-
 import * as showCart from "./routes/showcart.js";
 import * as checkout from "./routes/checkout.js";
 import * as order from "./routes/order.js";
+import * as clearData from "./routes/cleardata.js";
 
 export const app = express();
 const { engine } = exphb;
@@ -44,16 +44,18 @@ export const dbConfig = {
     database: "shopdb",
 };
 
+export const dbPoolConfig = {
+    ...dbConfig,
+    waitForConnections: true,
+    connectionLimit: 10,
+    queueLimit: 0,
+};
+
 /**
  * HTML Table Generator for MySQL
  */
 export const tableFromQuery = async (query, res) => {
-    const conn = await sql.createPool({
-        ...dbConfig,
-        waitForConnections: true,
-        connectionLimit: 10,
-        queueLimit: 0,
-    });
+    const conn = await sql.createPool(dbPoolConfig);
 
     let [rows] = await conn.query(query);
     let out = [];
@@ -124,6 +126,7 @@ app.use("/addcart", addCart.router);
 app.use("/showcart", showCart.router);
 app.use("/checkout", checkout.router);
 app.use("/order", order.router);
+app.use("/cleardata", clearData.router);
 
 // Rendering the main page
 app.get("/", function (req, res) {

@@ -1,58 +1,53 @@
-// const express = require("express");
-// const router = express.Router();
-// const sql = require("mysql2");
-// const fs = require("fs");
-
 import express from "express";
-import sql from "mysql2";
+import sql from "mysql2/promise";
 import moment from "moment";
 import fs from "fs";
 import * as sv from "../server.js";
 
 export const router = express.Router();
 
-router.get("/", function (req, res, next) {
-    //(async function () {
+const loadSQLFile = async (filename, res) => {
+    let results = [];
     try {
-        console.log(req.app.get("dbConfig"));
-        let pool = sql.createConnection(req.app.get("dbConfig"));
+        let pool = await sql.createPool(sv.dbPoolConfig);
 
-        // pool.connect((err) => {
-        //     if (err) throw err;
-        //     console.log("Connected!");
-        // });
-
-        res.setHeader("Content-Type", "text/html");
-        res.write(`<title>${req.app.get("storeName")} | Load Database</title>`);
-        res.write("<h1>Connecting to database...</h1><div>");
-
-        let data = fs.readFileSync("./data/data.sql", {
-            encoding: "utf8",
-        });
+        let data = fs.readFileSync(filename, { encoding: "utf8" });
         let commands = data.split(";");
+        let c;
         for (let i = 0; i < commands.length; i++) {
-            let command = commands[i];
-            if (command.trim() == "" || command.trim().startsWith("--")) {
-                continue;
-            }
-            let result = pool.query(command, (error, results, field) => {
-                if (error) {
-                    throw error;
+            c = commands[i]
+                .split("--")[0]
+                .trim()
+                .replace(/\r?\n|\r/g, " ");
+            if (c.length > 0) {
+                let result = await pool.query(c);
+
+                if (result) {
+                    res.write(`<p>${i}. <code>${c}</code></p>`);
+                    results.push(c);
                 }
-                return results;
-            });
-            if (result) res.write(`<p>${i}. <code>${result.sql}</code></p>`);
+            }
         }
         pool.end();
-
-        res.write("<h2>Database loading complete!</h2></div>");
     } catch (err) {
-        console.warn(`Error in loaddata.js: ${err}`);
-        res.write(err);
+        console.error(`Error in loaddata.js: ${err}`);
+        // res.status(500).end();
+        return "Error loading database.";
     } finally {
-        res.end();
+        return "Database loading complete!";
     }
-    //})();
+};
+
+router.get("/", function (req, res, next) {
+    res.setHeader("Content-Type", "text/html");
+    res.write(`<title>${sv.STORE_TITLE} | Load Database</title>`);
+
+    res.write(`<h1>Loading Database...</h1>`);
+
+    loadSQLFile("./data/data.sql", res).then((v) => {
+        res.write(`<h2>${v}</h2></div>`);
+        res.end();
+    });
 });
 
 export default router;

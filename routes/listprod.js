@@ -1,8 +1,5 @@
-// const express = require('express');
-// const sql = require('mysql');
-
 import express from "express";
-import sql from "mysql2";
+import sql from "mysql2/promise";
 
 export const router = express.Router();
 

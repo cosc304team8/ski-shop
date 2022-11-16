@@ -3,7 +3,7 @@
 // const moment = require('moment');
 
 import express from "express";
-import sql from "mysql2";
+import sql from "mysql2/promise";
 import moment from "moment";
 
 export const router = express.Router();

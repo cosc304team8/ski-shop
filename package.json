@@ -16,7 +16,7 @@
         "express-session": "^1.17.3",
         "fs": "^0.0.1-security",
         "moment": "^2.29.4",
-        "mysql2": "^2.3.3",
+        "mysql2/promise": "^2.3.3",
         "nodemon": "^2.0.20",
         "path": "^0.12.7",
         "tedious": "^15.1.1"

@@ -1,0 +1,11 @@
+DROP TABLE incart;
+DROP TABLE orderproduct;
+DROP TABLE productinventory;
+DROP TABLE review;
+DROP TABLE product;
+DROP TABLE category;
+DROP TABLE paymentmethod;
+DROP TABLE ordersummary;
+DROP TABLE customer;
+DROP TABLE shipment;
+DROP TABLE warehouse;

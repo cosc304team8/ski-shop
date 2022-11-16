@@ -1,8 +1,3 @@
-// const express = require("express");
-// const sql = require("mysql2");
-// const moment = require("moment");
-// const sv = require("../server");
-
 import express from "express";
 import sql from "mysql2/promise";
 import moment from "moment";
