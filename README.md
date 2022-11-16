@@ -24,7 +24,7 @@ Open a terminal in the folder you'd like to download the project's folder into (
 git clone https://github.com/cosc304team8/ski-shop.git
 ```
 
-(You will have to enter your GitHub username and password unless you have set up SSH keys.)
+(You may have to enter your GitHub username and password unless you have set up SSH keys.)
 
 Then change the directory to this downloaded folder:
 
@@ -90,6 +90,8 @@ And then every time you want to push after that, you can just run:
 ```bash
 git push
 ```
+
+(You may have to enter your GitHub username and password unless you have set up SSH keys.)
 
 ### Merging Changes
 
