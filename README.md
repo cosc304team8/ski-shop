@@ -14,7 +14,7 @@ Zaynb Alkhafadi, Daniel Coward, Ahmad Daoud, and Connor Doman
 
 You will need to have `node` and `yarn` installed to run this project. You can install `node` by following the instructions [here](https://nodejs.org/en/download/). You can install `yarn` by following the instructions [here](https://yarnpkg.com/en/docs/install).
 
-You also need `git` installed. This is installed by default Linux and macOS and can be also be upgraded on macOS with Homebrew. For Windows, you can install it [here](https://git-scm.com/downloads).
+You also need `git` installed. This is installed by default in Linux and macOS. For Windows, you can install it [here](https://git-scm.com/downloads).
 
 ### Setup
 
