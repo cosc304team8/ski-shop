@@ -5,7 +5,7 @@
     "repository": "N/A",
     "main": "server.js",
     "scripts": {
-        "start": "nodemon server.js",
+        "start": "yarn && nodemon server.js",
         "test": "echo \"Error: no test specified\" && exit 1"
     },
     "author": "COSC 304 Team 8 2022W1",
@@ -16,7 +16,7 @@
         "express-session": "^1.17.3",
         "fs": "^0.0.1-security",
         "moment": "^2.29.4",
-        "mysql2/promise": "^2.3.3",
+        "mysql2": "^2.3.3",
         "nodemon": "^2.0.20",
         "path": "^0.12.7",
         "tedious": "^15.1.1"
