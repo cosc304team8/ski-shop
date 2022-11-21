@@ -76,7 +76,7 @@ export const tableFromResults = (results, res) => {
         for (let k of keys) {
             res.write(
                 `<td>${
-                    k.toLowerCase().indexOf("price") > -1
+                    k.toUpperCase().indexOf("PRICE") > -1
                         ? PRICE_FORMATTER.format(r[k])
                         : r[k]
                 }</td>`
