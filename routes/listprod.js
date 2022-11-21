@@ -4,12 +4,12 @@ import * as sv from "../server.js";
 
 export const router = express.Router();
 
-const getListOfProducts = async (name, res) => {
+const getListOfProducts = async (name) => {
     let results = [];
     try {
         let pool = await sql.createPool(sv.dbPoolConfig);
         let [rows, fields] = await pool.query(
-            "SELECT * FROM product WHERE productName LIKE ?",
+            "SELECT productId, productName, productPrice, productDesc, (SELECT categoryName FROM category WHERE categoryId = product.categoryId) AS productCategory FROM product WHERE productName LIKE ?",
             [`%${name}%`]
         );
         pool.end();
@@ -49,8 +49,6 @@ const createProductTable = (products, cols) => {
     return table;
 };
 
-const searchUpdate = async (search, res) => {};
-
 let searchTerm = "";
 
 router.get("/", function (req, res, next) {
@@ -68,6 +66,9 @@ router.get("/", function (req, res, next) {
     getListOfProducts(searchTerm, res).then((v) => {
         /** Print out the ResultSet **/
         res.write(`<div class="container">`);
+        // res.write(
+        //     `<h3>Product list: ${JSON.stringify(req.session.productList)}</h3>`
+        // );
         res.write(
             searchTerm.length > 0
                 ? `<h1>Search results for "${searchTerm}":</h1>`
@@ -75,12 +76,13 @@ router.get("/", function (req, res, next) {
         );
 
         res.write(
-            `<form action="/listprod"><input type="text" class="textbox" name="productName" placeholder="Search for item"></input><input type="submit" class="button" value="Search"/></form>`
+            `<form action="/listprod" class="form"><input type="text" class="textbox" name="productName" placeholder="Search for item"></input><input type="submit" class="button" value="Search"/></form>`
         );
 
         res.write(`<h2>${v.length} products found.</h2>`);
+        let cols = ["ID", "Name", "Price", "Description", "Category"];
         if (v.length > 0) {
-            res.write(createProductTable(v));
+            res.write(createProductTable(v, cols));
         }
 
         res.write(`</div>`);

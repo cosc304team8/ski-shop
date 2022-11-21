@@ -40,6 +40,7 @@ router.get("/", function (req, res, next) {
         };
     }
 
+    // Save product list to session
     req.session.productList = productList;
     res.redirect("/showcart");
 });
