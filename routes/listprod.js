@@ -4,16 +4,35 @@ import * as sv from "../server.js";
 
 export const router = express.Router();
 
-const getListOfProducts = async (name) => {
-    let results = [];
+const getCategoryList = async (pool) => {
+    try {
+        let [rows, fields] = await pool.query(
+            "SELECT categoryName FROM category;"
+        );
+        return rows;
+    } catch (err) {
+        console.error(`Error loading categories database: ${err}`);
+    }
+    return [];
+};
+
+const getListOfProducts = async (name, category = "%") => {
+    if (category === "all") category = "%";
+
+    let results = {};
+    results.products = [];
+    results.categories = [];
     try {
         let pool = await sql.createPool(sv.dbPoolConfig);
         let [rows, fields] = await pool.query(
-            "SELECT productId, productName, productPrice, productDesc, (SELECT categoryName FROM category WHERE categoryId = product.categoryId) AS productCategory FROM product WHERE productName LIKE ?",
-            [`%${name}%`]
+            "SELECT productId, productName, productPrice, productDesc, (SELECT categoryName FROM category WHERE categoryId = product.categoryId) AS productCategory FROM product WHERE productName LIKE ? HAVING productCategory LIKE ?;",
+            [`%${name}%`, category]
         );
+        results.products = rows;
+
+        results.categories = await getCategoryList(pool);
+
         pool.end();
-        results = rows;
     } catch (err) {
         console.error(`Error loading products database: ${err}`);
     } finally {
@@ -49,40 +68,52 @@ const createProductTable = (products, cols) => {
     return table;
 };
 
-let searchTerm = "";
-
 router.get("/", function (req, res, next) {
     res.setHeader("Content-Type", "text/html");
     res.write(`<title>${sv.STORE_TITLE} | List of Products</title>`);
     res.write(`<link rel="stylesheet" href="/css/style.css">`);
 
     // Get the product name to search for
-    searchTerm = req.query.productName ? req.query.productName : "";
+    let searchTerm = req.query.productName ? req.query.productName : "";
+    let categoryName = req.query.category ? req.query.category : "all";
 
     /** $searchTerm now contains the search string the user entered
          Use it to build a query and print out the results. **/
 
     /** Create and validate connection **/
-    getListOfProducts(searchTerm, res).then((v) => {
+    getListOfProducts(searchTerm, categoryName).then((v) => {
         /** Print out the ResultSet **/
         res.write(`<div class="container">`);
         // res.write(
         //     `<h3>Product list: ${JSON.stringify(req.session.productList)}</h3>`
         // );
-        res.write(
+        let header =
             searchTerm.length > 0
-                ? `<h1>Search results for "${searchTerm}":</h1>`
-                : `<h1>Listing all products:</h1>`
+                ? `Search results for "${searchTerm}"`
+                : `Listing all products`;
+        res.write(
+            `<h1>${header}${
+                categoryName !== "all" ? ` in ${categoryName}` : ""
+            }:</h1>`
         );
+
+        let cats = `<option value="all" ${
+            categoryName === "all" ? "selected" : ""
+        }>All categories</option>`;
+        for (let c of v.categories) {
+            cats += `<option value="${c.categoryName}" ${
+                categoryName === c.categoryName ? "selected" : ""
+            }>${c.categoryName}</option>`;
+        }
 
         res.write(
-            `<form action="/listprod" class="form"><input type="text" class="textbox" name="productName" placeholder="Search for item"></input><input type="submit" class="button" value="Search"/></form>`
+            `<form action="/listprod" class="form"><input type="text" class="textbox" name="productName" placeholder="Search for item" value="${searchTerm}"></input><select name="category" class="dropdown">${cats}</select><input type="submit" class="button" value="Search"/></form>`
         );
 
-        res.write(`<h2>${v.length} products found.</h2>`);
+        res.write(`<h2>${v.products.length} products found.</h2>`);
         let cols = ["ID", "Name", "Price", "Description", "Category"];
-        if (v.length > 0) {
-            res.write(createProductTable(v, cols));
+        if (v.products.length > 0) {
+            res.write(createProductTable(v.products, cols));
         }
 
         res.write(`</div>`);

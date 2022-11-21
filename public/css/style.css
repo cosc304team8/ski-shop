@@ -73,6 +73,26 @@ th {
     border-color: #999;
 }
 
+.dropdown {
+    font-size: 1.2em;
+    padding: 0.3em 0.5em;
+    border: 0.01em solid #ccc;
+    border-radius: 0.25em;
+    margin: 0.25em;
+    background-color: #fff;
+}
+
+.dropdown:hover {
+    cursor: pointer;
+    background-color: #f4f4f4;
+}
+
+.dropdown:focus {
+    outline: none;
+    box-shadow: 0 0 0 0.05em #0066cc;
+    border-color: #999;
+}
+
 .button {
     background-color: #0060bf;
     color: #fff;
