@@ -27,19 +27,13 @@ router.use("/", function (req, res, next) {
 
             cartHtml += `<td class="cell">${product.quantity}</td>`;
 
-            cartHtml += `<td class="cell">${sv.PRICE_FORMATTER.format(
-                product.price
-            )}</td>`;
-            cartHtml += `<td class="cell">${sv.PRICE_FORMATTER.format(
-                product.price * product.quantity
-            )}</td>`;
+            cartHtml += `<td class="cell">${sv.PRICE_FORMATTER.format(product.price)}</td>`;
+            cartHtml += `<td class="cell">${sv.PRICE_FORMATTER.format(product.price * product.quantity)}</td>`;
             cartHtml += "</tr>";
             total = total + product.quantity * product.price;
         }
         cartHtml += `<tr><td  class="cell" colspan="4" align="right"><b>Order Total:</b></td>`;
-        cartHtml += `<td class="cell">${sv.PRICE_FORMATTER.format(
-            total
-        )}</td></tr>`;
+        cartHtml += `<td class="cell">${sv.PRICE_FORMATTER.format(total)}</td></tr>`;
         cartHtml += "</tbody>";
         cartHtml += "</table>";
 
@@ -57,7 +51,7 @@ router.use("/", function (req, res, next) {
 
     res.render("showcart", {
         title: "Shopping Cart",
-        pageTitle: `🎿 ${sv.STORE_TITLE}`,
+        pageTitle: `${sv.STORE_TITLE}`,
         cartContent: cartHtml,
     });
 

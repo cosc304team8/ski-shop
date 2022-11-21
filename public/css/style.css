@@ -19,10 +19,13 @@ th {
 
 .header {
     font-family: sans-serif;
-    display: sticky;
+    position: sticky;
+    top: 0;
     background-color: #f4f4f4;
     padding: 0.5em;
     text-align: center;
+    box-shadow: 0 -2em 2em 1em rgba(0, 0, 0, 0.75);
+    border: 0;
 }
 
 .nav {

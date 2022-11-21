@@ -74,13 +74,7 @@ export const tableFromResults = (results, res) => {
 
         res.write("<tr>");
         for (let k of keys) {
-            res.write(
-                `<td>${
-                    k.toUpperCase().indexOf("PRICE") > -1
-                        ? PRICE_FORMATTER.format(r[k])
-                        : r[k]
-                }</td>`
-            );
+            res.write(`<td>${k.toUpperCase().indexOf("PRICE") > -1 ? PRICE_FORMATTER.format(r[k]) : r[k]}</td>`);
         }
         res.write("</tr>");
     }
@@ -138,7 +132,9 @@ app.use("/cleardata", clearData.router);
 // Rendering the main page
 app.get("/", function (req, res) {
     res.render("index", {
-        title: STORE_TITLE,
+        title: "Home",
+        pageTitle: "Kelowna Alpine",
+        storeName: STORE_TITLE,
     });
 });
 

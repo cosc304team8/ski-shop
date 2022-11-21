@@ -6,9 +6,7 @@ export const router = express.Router();
 
 const getCategoryList = async (pool) => {
     try {
-        let [rows, fields] = await pool.query(
-            "SELECT categoryName FROM category;"
-        );
+        let [rows, fields] = await pool.query("SELECT categoryName FROM category;");
         return rows;
     } catch (err) {
         console.error(`Error loading categories database: ${err}`);
@@ -57,9 +55,7 @@ const createProductTable = (products, cols) => {
         for (let k of keys)
             table += `<td class="cell">${
                 // if the attribute is a price, format it
-                k.toUpperCase().indexOf("PRICE") > -1
-                    ? sv.PRICE_FORMATTER.format(p[k])
-                    : p[k]
+                k.toUpperCase().indexOf("PRICE") > -1 ? sv.PRICE_FORMATTER.format(p[k]) : p[k]
             }</td>`;
         table += "</tr>";
     }
@@ -68,10 +64,8 @@ const createProductTable = (products, cols) => {
     return table;
 };
 
-router.get("/", function (req, res, next) {
-    res.setHeader("Content-Type", "text/html");
-    res.write(`<title>${sv.STORE_TITLE} | List of Products</title>`);
-    res.write(`<link rel="stylesheet" href="/css/style.css">`);
+router.use("/", function (req, res, next) {
+    let productContent = "";
 
     // Get the product name to search for
     let searchTerm = req.query.productName ? req.query.productName : "";
@@ -83,47 +77,35 @@ router.get("/", function (req, res, next) {
     /** Create and validate connection **/
     getListOfProducts(searchTerm, categoryName).then((v) => {
         /** Print out the ResultSet **/
-        res.write(`<div class="container">`);
         // res.write(
         //     `<h3>Product list: ${JSON.stringify(req.session.productList)}</h3>`
         // );
-        let header =
-            searchTerm.length > 0
-                ? `Search results for "${searchTerm}"`
-                : `Listing all products`;
-        res.write(
-            `<h1>${header}${
-                categoryName !== "all" ? ` in ${categoryName}` : ""
-            }:</h1>`
-        );
+        let header = searchTerm.length > 0 ? `Search results for "${searchTerm}"` : `Listing all products`;
+        productContent += `<h1>${header}${categoryName !== "all" ? ` in ${categoryName}` : ""}:</h1>`;
 
-        let cats = `<option value="all" ${
-            categoryName === "all" ? "selected" : ""
-        }>All categories</option>`;
+        let cats = `<option value="all" ${categoryName === "all" ? "selected" : ""}>All categories</option>`;
         for (let c of v.categories) {
-            cats += `<option value="${c.categoryName}" ${
-                categoryName === c.categoryName ? "selected" : ""
-            }>${c.categoryName}</option>`;
+            cats += `<option value="${c.categoryName}" ${categoryName === c.categoryName ? "selected" : ""}>${
+                c.categoryName
+            }</option>`;
         }
 
-        res.write(
-            `<form action="/listprod" class="form"><input type="text" class="textbox" name="productName" placeholder="Search for item" value="${searchTerm}"></input><select name="category" class="dropdown">${cats}</select><input type="submit" class="button" value="Search"/></form>`
-        );
+        productContent += `<form action="/listprod" class="form"><input type="text" class="textbox" name="productName" placeholder="Search for item" value="${searchTerm}"></input><select name="category" class="dropdown" onchange="this.form.submit();">${cats}</select><input type="submit" class="button" value="Search"/></form>`;
 
-        res.write(`<h2>${v.products.length} products found.</h2>`);
+        productContent += `<h2>${v.products.length} products found.</h2>`;
         let cols = ["ID", "Name", "Price", "Description", "Category"];
         if (v.products.length > 0) {
-            res.write(createProductTable(v.products, cols));
+            productContent += createProductTable(v.products, cols);
         }
 
-        res.write(`</div>`);
-        res.end();
+        // res.end();
+        res.render("listprod", {
+            title: "List of Products",
+            pageTitle: "List of Products",
+            productContent,
+        });
     });
-
-    /** 
-    For each product create a link of the form
-    addcart?id=<productId>&name=<productName>&price=<productPrice>
-    **/
+    // end of promise
 });
 
 export default router;
