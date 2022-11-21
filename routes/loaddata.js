@@ -23,8 +23,7 @@ const loadSQLFile = async (filename, res) => {
                 let result = await pool.query(c);
 
                 if (result) {
-                    res.write(`<p>${i}. <code>${c}</code></p>`);
-                    results.push(c);
+                    results.push(`<p>${i}. <code>${c}</code></p>`);
                 }
             }
         }
@@ -32,21 +31,34 @@ const loadSQLFile = async (filename, res) => {
     } catch (err) {
         console.error(`Error in loaddata.js: ${err}`);
         // res.status(500).end();
-        return "Error loading database.";
     } finally {
-        return "Database loading complete!";
+        return results;
     }
 };
 
-router.get("/", function (req, res, next) {
-    res.setHeader("Content-Type", "text/html");
-    res.write(`<title>${sv.STORE_TITLE} | Load Database</title>`);
+router.use("/", function (req, res, next) {
+    let loaddataContent = "";
+    // res.setHeader("Content-Type", "text/html");
+    // res.write(`<title>${sv.STORE_TITLE} | Load Database</title>`);
 
-    res.write(`<h1>Loading Database...</h1>`);
+    loaddataContent += `<h1>Loading Database...</h1>`;
 
     loadSQLFile("./data/data.sql", res).then((v) => {
-        res.write(`<h2>${v}</h2></div>`);
-        res.end();
+        if (v.length > 0) {
+            loaddataContent += `<h2>Database loaded successfully!</h2>`;
+        } else {
+            loaddataContent += `<h2>Database load failed!</h2>`;
+        }
+
+        for (let r of v) {
+            loaddataContent += r;
+        }
+
+        res.render("loaddata", {
+            title: "Load Database",
+            pageTitle: "Load Database",
+            loaddataContent,
+        });
     });
 });
 

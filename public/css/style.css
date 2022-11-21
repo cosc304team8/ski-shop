@@ -169,6 +169,16 @@ th {
     text-align: right;
 }
 
+.link {
+    padding-bottom: 0.1em;
+    border-bottom: 0.01em solid transparent;
+}
+
+.link:hover {
+    border-bottom: 0.01em solid;
+    border-color: #0060bf;
+}
+
 .link a {
     color: #0060bf;
     text-decoration: none;

@@ -2,28 +2,21 @@ import express from "express";
 
 export const router = express.Router();
 
-router.get("/", function (req, res, next) {
-    res.setHeader("Content-Type", "text/html");
-    res.write("<title>Grocery CheckOut Line</title>");
+router.use("/", (req, res) => {
+    let checkoutContent = "";
+    checkoutContent += "<h1>Enter your customer id to complete the transaction:</h1>";
 
-    res.write(`<link rel="stylesheet" href="/css/style.css">`);
+    checkoutContent += '<form method="get" action="order" accept-charset="UTF-8">';
+    checkoutContent += '<input class="textbox" type="text" name="customerId">';
+    checkoutContent +=
+        '<input class="button" type="submit" value="Submit"><input class="button" type="reset" value="Reset">';
+    checkoutContent += "</form>";
 
-    res.write(`<div class="container">`);
-    res.write("<h1>Enter your customer id to complete the transaction:</h1>");
-
-    // res.write(
-    //     `<h3>Product list: ${JSON.stringify(req.session.productList)}</h3>`
-    // );
-
-    res.write('<form method="get" action="order" accept-charset="UTF-8">');
-    res.write('<input class="textbox" type="text" name="customerId">');
-    res.write(
-        '<input class="button" type="submit" value="Submit"><input class="button" type="reset" value="Reset">'
-    );
-    res.write("</form>");
-    res.write("</div>");
-
-    res.end();
+    res.render("checkout", {
+        title: "Checkout",
+        pageTitle: "Checkout",
+        checkoutContent,
+    });
 });
 
 export default router;

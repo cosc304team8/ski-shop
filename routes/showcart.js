@@ -37,11 +37,11 @@ router.use("/", function (req, res, next) {
         cartHtml += "</tbody>";
         cartHtml += "</table>";
 
-        cartHtml += '<h3><a href="checkout">Check Out</a></h3>';
+        cartHtml += '<h3><span class="link"><a href="checkout">Check Out</a></span></h3>';
     } else {
         cartHtml += "<h2>Your shopping cart is empty!</h2>";
     }
-    cartHtml += '<h3><a href="listprod">Continue Shopping</a></h3>';
+    cartHtml += '<h3><span class="link"><a href="listprod">Continue Shopping</a></span></h3>';
 
     // res.render("showcart", {
     //     title: "Shopping Cart",

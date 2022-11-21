@@ -14,18 +14,13 @@ const checkCustomerExists = async (customerId) => {
 
     customerId = parseInt(customerId);
     if (typeof customerId !== "number") {
-        console.log(
-            `Customer ID is not a number: typeof ${customerId} = ${typeof customerId}`
-        );
+        console.log(`Customer ID is not a number: typeof ${customerId} = ${typeof customerId}`);
         return false;
     }
 
     try {
         let pool = await sql.createPool(sv.dbPoolConfig);
-        let [rows, fields] = await pool.query(
-            "SELECT customerId FROM customer WHERE customerId = ?;",
-            [customerId]
-        );
+        let [rows, fields] = await pool.query("SELECT customerId FROM customer WHERE customerId = ?;", [customerId]);
         pool.end();
         result = rows.length > 0;
     } catch (err) {
@@ -49,9 +44,7 @@ const getCurrentOrderId = async (pool) => {
         );
         result = rows[0].nextId;
     } catch (err) {
-        console.error(
-            `Error loading AUTO_INCREMENT from database "shopdb": ${err}`
-        );
+        console.error(`Error loading AUTO_INCREMENT from database "shopdb": ${err}`);
     }
     return result;
 };
@@ -122,9 +115,7 @@ const buildSummaryTable = (orderId, order, products) => {
             page += `<td class="cell">${p.id}</td>`;
             page += `<td class="cell">${p.name}</td>`;
             page += `<td class="cell">${p.quantity}</td>`;
-            page += `<td class="cell">${sv.PRICE_FORMATTER.format(
-                p.price
-            )}</td>`;
+            page += `<td class="cell">${sv.PRICE_FORMATTER.format(p.price)}</td>`;
             page += `</tr>`;
         }
     }
@@ -150,108 +141,50 @@ const saveOrderToDB = async (order, products) => {
     return `<h2>Order could not be saved to database</h2>`;
 };
 
-router.get("/", function (req, res, next) {
-    res.setHeader("Content-Type", "text/html");
-    res.write(`<title>${sv.STORE_TITLE} Order Processing</title>`);
-    res.write(`<link rel="stylesheet" href="/css/style.css">`);
+router.use("/", (req, res) => {
+    let orderContent = "";
 
     let productList = false;
     if (req.session.productList && req.session.productList.length > 0) {
         productList = req.session.productList;
     }
 
-    res.write(`<div class="container">`);
-    let page = "<h1>Order Processing</h1>";
-    /**
-    Determine if valid customer id was entered
-    Determine if there are products in the shopping cart
-    If either are not true, display an error message
-    **/
+    orderContent = "<h1>Order Processing</h1>";
     let customerId = req.query.customerId;
 
     // Validate info first
-    checkCustomerExists(customerId)
-        .then((result) => {
-            result = result && productList;
-
-            if (result) {
-                // Prepare order object
-                let order = {
-                    orderDate: moment().format("YYYY-MM-DD HH:mm:ss"),
-                    totalAmount: 0.0,
-                    customerId: customerId,
-                };
-                for (let p of productList) {
-                    if (p) order.totalAmount += p.price * p.quantity;
-                }
-                // Save order to database
-                saveOrderToDB(order, productList).then((table) => {
-                    page += table;
-
-                    page += `<h2>Thank you for your order! <a href="/">Return home.</a></h2>`;
-
-                    // Clear session cart
-                    req.session.productList = [];
-                    res.write(page);
-                    res.write(`</div>`);
-                    res.end();
-                });
-            } else if (!productList) {
-                page += `<h1>No Products in Cart</h1>`;
-                page += "<h2><a href='/showcart'>Back to Cart</a></h2>";
-                res.write(page);
-                res.write(`</div>`);
-                res.end();
-            } else {
-                page += `<h1>Invalid Customer ID</h1>`;
-                page += "<h2><a href='/showcart'>Back to Cart</a></h2>";
-                res.write(page);
-                res.write(`</div>`);
-                res.end();
+    checkCustomerExists(customerId).then((result) => {
+        if (result && productList) {
+            // Prepare order object
+            let order = {
+                orderDate: moment().format("YYYY-MM-DD HH:mm:ss"),
+                totalAmount: 0.0,
+                customerId: customerId,
+            };
+            for (let p of productList) {
+                if (p) order.totalAmount += p.price * p.quantity;
             }
-        })
-        .catch((err) => {
-            console.error(`Error checking customer: ${err}`);
-            res.status(500).end();
-        });
+            // Save order to database
+            saveOrderToDB(order, productList).then((table) => {
+                orderContent += table;
 
-    /** Make connection and validate **/
+                orderContent += `<h2>Thank you for your order! <span class="link"><a href="/">Return home.</a></span></h2>`;
 
-    /** Save order information to database**/
-
-    /**
-        // Use retrieval of auto-generated keys.
-        sqlQuery = "INSERT INTO <TABLE> OUTPUT INSERTED.orderId VALUES( ... )";
-        let result = await pool.request()
-            .input(...)
-            .query(sqlQuery);
-        // Catch errors generated by the query
-        let orderId = result.recordset[0].orderId;
-        **/
-
-    /** Insert each item into OrderedProduct table using OrderId from previous INSERT **/
-
-    /** Update total amount for order record **/
-
-    /** For each entry in the productList is an array with key values: id, name, quantity, price **/
-
-    /**
-        for (let i = 0; i < productList.length; i++) {
-            let product = products[i];
-            if (!product) {
-                continue;
-            }
-            // Use product.id, product.name, product.quantity, and product.price here
+                // Clear session cart
+                req.session.productList = [];
+                orderContent += orderContent;
+                res.render("order", { title: "Order", orderContent });
+                return;
+            });
+        } else if (!productList) {
+            orderContent += `<h2>No Products in Cart</h2>`;
+            orderContent += `<h3><span class="link"><a href="/showcart">Back to Cart</a></span></h3>`;
+        } else {
+            orderContent += `<h2>Invalid Customer ID</h2>`;
+            orderContent += `<h3><span class="link"><a href="/showcart">Back to Cart</a></span></h3>`;
         }
-    **/
-
-    /** Print out order summary **/
-
-    /** Clear session/cart **/
-
-    // res.write(page);
-    // res.write(`</div>`);
+        res.render("order", { title: "Order", orderContent });
+    });
 });
 
 export default router;
-// module.exports = router;
