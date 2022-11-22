@@ -142,14 +142,14 @@ const saveOrderToDB = async (order, products) => {
 };
 
 router.use("/", (req, res) => {
-    let orderContent = "";
+    let content = "";
 
     let productList = false;
     if (req.session.productList && req.session.productList.length > 0) {
         productList = req.session.productList;
     }
 
-    orderContent = "<h1>Order Processing</h1>";
+    content = "<h1>Order Processing</h1>";
     let customerId = req.query.customerId;
 
     // Validate info first
@@ -166,24 +166,24 @@ router.use("/", (req, res) => {
             }
             // Save order to database
             saveOrderToDB(order, productList).then((table) => {
-                orderContent += table;
+                content += table;
 
-                orderContent += `<h2>Thank you for your order! <span class="link"><a href="/">Return home.</a></span></h2>`;
+                content += `<h2>Thank you for your order! <span class="link"><a href="/">Return home.</a></span></h2>`;
 
                 // Clear session cart
                 req.session.productList = [];
-                orderContent += orderContent;
-                res.render("order", { title: "Order", orderContent });
+                content += content;
+                res.render("template", { title: "Order", content });
                 return;
             });
         } else if (!productList) {
-            orderContent += `<h2>No Products in Cart</h2>`;
-            orderContent += `<h3><span class="link"><a href="/showcart">Back to Cart</a></span></h3>`;
+            content += `<h2>No Products in Cart</h2>`;
+            content += `<h3><span class="link"><a href="/showcart">Back to Cart</a></span></h3>`;
         } else {
-            orderContent += `<h2>Invalid Customer ID</h2>`;
-            orderContent += `<h3><span class="link"><a href="/showcart">Back to Cart</a></span></h3>`;
+            content += `<h2>Invalid Customer ID</h2>`;
+            content += `<h3><span class="link"><a href="/showcart">Back to Cart</a></span></h3>`;
         }
-        res.render("order", { title: "Order", orderContent });
+        res.render("template", { title: "Order", content });
     });
 });
 

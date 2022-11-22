@@ -36,21 +36,21 @@ const clearFromSQLFile = async (filename, res) => {
 
 router.use("/", (req, res) => {
     clearFromSQLFile("./data/clear.sql", res).then((v) => {
-        let cleardataContent = "";
+        let content = "";
         if (v.length > 0) {
-            cleardataContent += `<h2>Data cleared successfully!</h2>`;
+            content += `<h2>Data cleared successfully!</h2>`;
         } else {
-            cleardataContent += `<h2>No data to clear</h2>`;
+            content += `<h2>No data to clear</h2>`;
         }
 
         for (let r of v) {
-            cleardataContent += r;
+            content += r;
         }
 
-        res.render("cleardata", {
+        res.render("template", {
             title: "Clear Database",
             pageTitle: "Clear Database",
-            cleardataContent,
+            content,
         });
     });
 });

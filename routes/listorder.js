@@ -86,18 +86,18 @@ const buildOrderTable = async (orders) => {
 };
 
 router.use("/", (req, res) => {
-    let listorderContent = "";
+    let content = "";
 
     let orderId = req.query.id;
 
     getListOfOrders(orderId).then((orders) => {
         buildOrderTable(orders).then((table) => {
-            listorderContent += table;
+            content += table;
 
-            res.render("listorder", {
+            res.render("template", {
                 title: "Orders",
                 pageTitle: "Orders",
-                listorderContent,
+                content,
             });
         });
     });

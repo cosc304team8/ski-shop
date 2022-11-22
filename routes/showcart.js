@@ -4,17 +4,17 @@ import * as sv from "../server.js";
 export const router = express.Router();
 
 router.use("/", function (req, res, next) {
-    let cartHtml = "";
+    let content = "";
     let productList = [];
 
     if (req.session.productList) {
         productList = req.session.productList;
-        cartHtml += "<h2>Your Shopping Cart</h2>";
-        cartHtml += `<table class="table">`;
-        cartHtml += `<thead><tr><th class="hcell">Product Id</th><th class="hcell">Product Name</th><th class="hcell">Quantity</th>`;
-        cartHtml += `<th class="hcell">Price</th><th class="hcell">Subtotal</th></tr></thead>`;
+        content += "<h2>Your Shopping Cart</h2>";
+        content += `<table class="table">`;
+        content += `<thead><tr><th class="hcell">Product Id</th><th class="hcell">Product Name</th><th class="hcell">Quantity</th>`;
+        content += `<th class="hcell">Price</th><th class="hcell">Subtotal</th></tr></thead>`;
 
-        cartHtml += "<tbody>";
+        content += "<tbody>";
         let total = 0;
         for (let i = 0; i < productList.length; i++) {
             let product = productList[i];
@@ -22,37 +22,35 @@ router.use("/", function (req, res, next) {
                 continue;
             }
 
-            cartHtml += `<tr><td class="cell">${product.id}</td>`;
-            cartHtml += `<td class="cell">${product.name}</td>`;
+            content += `<tr><td class="cell">${product.id}</td>`;
+            content += `<td class="cell">${product.name}</td>`;
 
-            cartHtml += `<td class="cell">${product.quantity}</td>`;
+            content += `<td class="cell"><input form="updateCartForm" type="hidden" name="id" value="${product.id}"/><input form="updateCartForm" class="textbox" name="quantity" style="width: 4em; font-size: 12pt;" type="number" value="${product.quantity}" min="0" oninput="((target) => {target.value !== '${product.quantity}' ? target.classList.add('updated') : target.classList.remove('updated');})(this)"/></td>`;
 
-            cartHtml += `<td class="cell">${sv.PRICE_FORMATTER.format(product.price)}</td>`;
-            cartHtml += `<td class="cell">${sv.PRICE_FORMATTER.format(product.price * product.quantity)}</td>`;
-            cartHtml += "</tr>";
+            content += `<td class="cell price">${sv.PRICE_FORMATTER.format(product.price)}</td>`;
+            content += `<td class="cell price">${sv.PRICE_FORMATTER.format(product.price * product.quantity)}</td>`;
+            content += "</tr>";
             total = total + product.quantity * product.price;
         }
-        cartHtml += `<tr><td  class="cell" colspan="4" align="right"><b>Order Total:</b></td>`;
-        cartHtml += `<td class="cell">${sv.PRICE_FORMATTER.format(total)}</td></tr>`;
-        cartHtml += "</tbody>";
-        cartHtml += "</table>";
+        content += `<tr>`;
+        content += `<td class="cell t-right" colspan="3"></td>`;
+        content += `<td  class="cell" colspan="1" align="right"><b>Order Total:</b></td>`;
+        content += `<td class="cell price">${sv.PRICE_FORMATTER.format(total)}</td></tr>`;
+        content += "</tbody>";
+        content += "</table>";
 
-        cartHtml += '<h3><span class="link"><a href="checkout">Check Out</a></span></h3>';
+        content += '<h3><span class="link"><a href="checkout">Check Out</a></span></h3>';
     } else {
-        cartHtml += "<h2>Your shopping cart is empty!</h2>";
+        content += "<h2>Your shopping cart is empty!</h2>";
     }
-    cartHtml += '<h3><span class="link"><a href="listprod">Continue Shopping</a></span></h3>';
+    content += '<h3><span class="link"><a href="listprod">Continue Shopping</a></span></h3>';
 
-    // res.render("showcart", {
-    //     title: "Shopping Cart",
-    // });
+    content += `</div>`;
 
-    cartHtml += `</div>`;
-
-    res.render("showcart", {
+    res.render("template", {
         title: "Shopping Cart",
         pageTitle: `${sv.STORE_TITLE}`,
-        cartContent: cartHtml,
+        content,
     });
 
     return;

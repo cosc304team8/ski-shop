@@ -24,7 +24,7 @@ th {
     background-color: #f4f4f4;
     padding: 0.5em;
     text-align: center;
-    box-shadow: 0 -2em 2em 1em rgba(0, 0, 0, 0.75);
+    box-shadow: 0 0 1em 0 rgba(0, 0, 0, 0.1);
     border: 0;
 }
 
@@ -163,10 +163,15 @@ th {
     display: flex;
     flex-direction: row;
     align-items: center;
+    margin: 0;
 }
 
 .t-right {
     text-align: right;
+}
+
+.t-center {
+    text-align: center;
 }
 
 .link {
@@ -187,4 +192,12 @@ th {
 .titleLink a {
     color: #232323;
     text-decoration: none;
+}
+
+.updated {
+    border-color: darkred;
+}
+
+.price {
+    text-align: center;
 }

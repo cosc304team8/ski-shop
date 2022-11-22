@@ -37,27 +37,27 @@ const loadSQLFile = async (filename, res) => {
 };
 
 router.use("/", function (req, res, next) {
-    let loaddataContent = "";
+    let content = "";
     // res.setHeader("Content-Type", "text/html");
     // res.write(`<title>${sv.STORE_TITLE} | Load Database</title>`);
 
-    loaddataContent += `<h1>Loading Database...</h1>`;
+    content += `<h1>Loading Database...</h1>`;
 
-    loadSQLFile("./data/data.sql", res).then((v) => {
-        if (v.length > 0) {
-            loaddataContent += `<h2>Database loaded successfully!</h2>`;
+    loadSQLFile("./data/data.sql", res).then((results) => {
+        if (results.length > 0) {
+            content += `<h2>Database loaded successfully!</h2>`;
         } else {
-            loaddataContent += `<h2>Database load failed!</h2>`;
+            content += `<h2>Database load failed!</h2>`;
         }
 
-        for (let r of v) {
-            loaddataContent += r;
+        for (let r of results) {
+            content += r;
         }
 
-        res.render("loaddata", {
+        res.render("template", {
             title: "Load Database",
             pageTitle: "Load Database",
-            loaddataContent,
+            content,
         });
     });
 });

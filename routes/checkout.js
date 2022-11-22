@@ -3,19 +3,18 @@ import express from "express";
 export const router = express.Router();
 
 router.use("/", (req, res) => {
-    let checkoutContent = "";
-    checkoutContent += "<h1>Enter your customer id to complete the transaction:</h1>";
+    let content = "";
+    content += "<h1>Enter your customer id to complete the transaction:</h1>";
 
-    checkoutContent += '<form method="get" action="order" accept-charset="UTF-8">';
-    checkoutContent += '<input class="textbox" type="text" name="customerId">';
-    checkoutContent +=
-        '<input class="button" type="submit" value="Submit"><input class="button" type="reset" value="Reset">';
-    checkoutContent += "</form>";
+    content += '<form method="get" action="order" accept-charset="UTF-8">';
+    content += '<input class="textbox" type="text" name="customerId">';
+    content += '<input class="button" type="submit" value="Submit"><input class="button" type="reset" value="Reset">';
+    content += "</form>";
 
-    res.render("checkout", {
+    res.render("template", {
         title: "Checkout",
         pageTitle: "Checkout",
-        checkoutContent,
+        content,
     });
 });
 
