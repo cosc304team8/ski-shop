@@ -5,7 +5,7 @@
     "repository": "https://github.com/cosc304team8/ski-shop.git",
     "main": "server.js",
     "scripts": {
-        "start": "yarn && nodemon server.js",
+        "start": "nodemon server.js",
         "test": "echo \"Error: no test specified\" && exit 1"
     },
     "author": "COSC 304 Team 8 2022W1",
