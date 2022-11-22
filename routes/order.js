@@ -172,10 +172,11 @@ router.use("/", (req, res) => {
 
                 // Clear session cart
                 req.session.productList = [];
-                content += content;
+                // content += content;
                 res.render("template", { title: "Order", content });
-                return;
             });
+            // break out of promise chain
+            return;
         } else if (!productList) {
             content += `<h2>No Products in Cart</h2>`;
             content += `<h3><span class="link"><a href="/showcart">Back to Cart</a></span></h3>`;
