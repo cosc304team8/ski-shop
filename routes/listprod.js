@@ -22,7 +22,7 @@ const getListOfProducts = async (name, category = "%") => {
     results.categories = [];
 
     try {
-        let pool = await sql.createPool(sresults.dbPoolConfig);
+        let pool = await sql.createPool(sv.dbPoolConfig);
         let [rows, fields] = await pool.query(
             "SELECT productId, productName, productPrice, productDesc, (SELECT categoryName FROM category WHERE categoryId = product.categoryId) AS productCategory FROM product WHERE productName LIKE ? HAVING productCategory LIKE ?;",
             [`%${name}%`, category]
