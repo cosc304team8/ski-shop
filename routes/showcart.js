@@ -1,64 +1,59 @@
-// const express = require('express');
-
 import express from "express";
+import * as sv from "../server.js";
 
 export const router = express.Router();
 
-router.get("/", function (req, res, next) {
-    let productList = false;
-    res.setHeader("Content-Type", "text/html");
-    res.write("<title>Your Shopping Cart</title>");
+router.use("/", function (req, res, next) {
+    let content = "";
+    let productList = [];
+
     if (req.session.productList) {
         productList = req.session.productList;
-        res.write("<h1>Your Shopping Cart</h1>");
-        res.write(
-            "<table><tr><th>Product Id</th><th>Product Name</th><th>Quantity</th>"
-        );
-        res.write("<th>Price</th><th>Subtotal</th></tr>");
+        content += "<h2>Your Shopping Cart</h2>";
+        content += `<table class="table">`;
+        content += `<thead><tr><th class="hcell">Product Id</th><th class="hcell">Product Name</th><th class="hcell">Quantity</th>`;
+        content += `<th class="hcell">Price</th><th class="hcell">Subtotal</th></tr></thead>`;
 
+        content += "<tbody>";
         let total = 0;
         for (let i = 0; i < productList.length; i++) {
-            product = productList[i];
+            let product = productList[i];
             if (!product) {
                 continue;
             }
 
-            res.write("<tr><td>" + product.id + "</td>");
-            res.write("<td>" + product.name + "</td>");
+            content += `<tr><td class="cell">${product.id}</td>`;
+            content += `<td class="cell">${product.name}</td>`;
 
-            res.write('<td align="center">' + product.quantity + "</td>");
+            content += `<td class="cell"><input form="updateCartForm" type="hidden" name="id" value="${product.id}"/><input form="updateCartForm" class="textbox" name="quantity" style="width: 4em; font-size: 12pt;" type="number" value="${product.quantity}" min="0" oninput="((target) => {target.value !== '${product.quantity}' ? target.classList.add('updated') : target.classList.remove('updated');})(this)"/></td>`;
 
-            res.write(
-                '<td align="right">$' +
-                    Number(product.price).toFixed(2) +
-                    "</td>"
-            );
-            res.write(
-                '<td align="right">$' +
-                    (
-                        Number(product.quantity.toFixed(2)) *
-                        Number(product.price)
-                    ).toFixed(2) +
-                    "</td></tr>"
-            );
-            res.write("</tr>");
+            content += `<td class="cell price">${sv.PRICE_FORMATTER.format(product.price)}</td>`;
+            content += `<td class="cell price">${sv.PRICE_FORMATTER.format(product.price * product.quantity)}</td>`;
+            content += "</tr>";
             total = total + product.quantity * product.price;
         }
-        res.write(
-            '<tr><td colspan="4" align="right"><b>Order Total</b></td><td align="right">$' +
-                total.toFixed(2) +
-                "</td></tr>"
-        );
-        res.write("</table>");
+        content += `<tr>`;
+        content += `<td class="cell t-right" colspan="3"></td>`;
+        content += `<td  class="cell" colspan="1" align="right"><b>Order Total:</b></td>`;
+        content += `<td class="cell price">${sv.PRICE_FORMATTER.format(total)}</td></tr>`;
+        content += "</tbody>";
+        content += "</table>";
 
-        res.write('<h2><a href="checkout">Check Out</a></h2>');
+        content += '<h3><span class="link"><a href="checkout">Check Out</a></span></h3>';
     } else {
-        res.write("<h1>Your shopping cart is empty!</h1>");
+        content += "<h2>Your shopping cart is empty!</h2>";
     }
-    res.write('<h2><a href="listprod">Continue Shopping</a></h2>');
+    content += '<h3><span class="link"><a href="listprod">Continue Shopping</a></span></h3>';
 
-    res.end();
+    content += `</div>`;
+
+    res.render("template", {
+        title: "Shopping Cart",
+        pageTitle: `${sv.STORE_TITLE}`,
+        content,
+    });
+
+    return;
 });
 
 export default router;
-// module.exports = router;

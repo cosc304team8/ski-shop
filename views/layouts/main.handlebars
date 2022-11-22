@@ -1,10 +1,35 @@
 <html>
     <head>
         <meta charset="utf-8" />
-        <title>{{title}}</title>
+        <title>{{title}} | Kelowna Alpine 🎿</title>
         <link rel="stylesheet" href="/css/style.css" />
+        <link
+            rel="icon"
+            href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎿</text></svg>"
+        />
     </head>
     <body>
-        {{{body}}}
+        <header class="header">
+            <nav class="nav">
+                <h1 class="titleLink"><a href="/">🎿 Kelowna Alpine</a></h1>
+                <ul class="navlist">
+                    <li>
+                        <span class="link"><a href="/listprod">Begin Shopping</a></span>
+                    </li>
+                    <li>
+                        <span class="link"><a href="/listorder">List All Orders</a></span>
+                    </li>
+                    <li>
+                        <span class="link"><a href="/loaddata">Load Initial Data</a></span>
+                    </li>
+                    <li>
+                        <span class="link"><a href="/cleardata">Clear All Data</a></span>
+                    </li>
+                </ul>
+            </nav>
+        </header>
+        <main>
+            {{{body}}}
+        </main>
     </body>
 </html>

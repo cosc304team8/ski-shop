@@ -2,7 +2,7 @@
     "name": "cosc304lab7",
     "version": "1.0.0",
     "description": "COSC 304 Lab 7 Team 8",
-    "repository": "N/A",
+    "repository": "https://github.com/cosc304team8/ski-shop.git",
     "main": "server.js",
     "scripts": {
         "start": "yarn && nodemon server.js",

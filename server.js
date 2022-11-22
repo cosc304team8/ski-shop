@@ -35,6 +35,10 @@ const { engine } = exphb;
  * Global Variables
  */
 export const STORE_TITLE = "Kelowna Alpine";
+export const PRICE_FORMATTER = new Intl.NumberFormat("en-CA", {
+    style: "currency",
+    currency: "CAD",
+});
 
 // This DB Config is accessible globally
 export const dbConfig = {
@@ -54,15 +58,10 @@ export const dbPoolConfig = {
 /**
  * HTML Table Generator for MySQL
  */
-export const tableFromQuery = async (query, res) => {
-    const conn = await sql.createPool(dbPoolConfig);
-
-    let [rows] = await conn.query(query);
-    let out = [];
-
+export const tableFromResults = (results, res) => {
     res.write("<table>");
-    for (let i = 0; i < rows.length; i++) {
-        let r = rows[i];
+    for (let i = 0; i < results.length; i++) {
+        let r = results[i];
         let keys = Object.keys(r);
 
         if (i === 0) {
@@ -74,19 +73,21 @@ export const tableFromQuery = async (query, res) => {
         }
 
         res.write("<tr>");
-        // console.log(`r = ${r}`);
         for (let k of keys) {
-            // console.log(`\t${k} = ${r[k]}`);
-            res.write(`<td>${r[k]}</td>`);
+            res.write(`<td>${k.toUpperCase().indexOf("PRICE") > -1 ? PRICE_FORMATTER.format(r[k]) : r[k]}</td>`);
         }
         res.write("</tr>");
-        // console.log(r, keys);
-        // res.write(
-        //     `<p>${JSON.stringify(r, null, 4).replace(/\n/g, "<br/>")}</p>`
-        // );
     }
 
     res.write("</table>");
+};
+
+export const tableFromQuery = async (query, res) => {
+    const conn = await sql.createPool(dbPoolConfig);
+
+    let [rows] = await conn.query(query);
+
+    tableFromResults(rows, res);
 };
 
 // Setting up the session.
@@ -131,7 +132,9 @@ app.use("/cleardata", clearData.router);
 // Rendering the main page
 app.get("/", function (req, res) {
     res.render("index", {
-        title: STORE_TITLE,
+        title: "Home",
+        pageTitle: "Kelowna Alpine",
+        storeName: STORE_TITLE,
     });
 });
 

@@ -1,5 +1,13 @@
 # COSC 304 Project Group 8
 
+## ** PLEASE READ THIS FIRST **
+
+_We converted the project to use MySQL since there we were having issues with Microsoft SQL Server on Apple Silicon._
+
+Please use our `docker-compose` file as it contains the MySQL config data.
+
+---
+
 ## Project Description
 
 Ski/Snowboard Supply Shop written in Node.js
@@ -12,7 +20,7 @@ Zaynb Alkhafadi, Daniel Coward, Ahmad Daoud, and Connor Doman
 
 ### Prerequisites
 
-You will need to have `node` and `yarn` installed to run this project. You can install `node` by following the instructions [here](https://nodejs.org/en/download/). You can install `yarn` by following the instructions [here](https://yarnpkg.com/en/docs/install).
+You will need to have `node` installed to run this project. You can install `node` by following the instructions [here](https://nodejs.org/en/download/).
 
 You also need `git` installed. This is installed by default in Linux and macOS. For Windows, you can install it [here](https://git-scm.com/downloads).
 
@@ -30,12 +38,6 @@ Then change the directory to this downloaded folder:
 
 ```bash
 cd ski-shop
-```
-
-And install the project's dependencies:
-
-```bash
-yarn install
 ```
 
 ## Running the Project
@@ -62,7 +64,7 @@ If you're having connection issues, delete existing docker containers and try th
 
 When you work on a feature, you should use a different git branch.
 
-This helps keep changes from snowballing the project into being dysfunctional and makes it easier to merge changes into the `main` branch.
+This helps keep changes from snowballing out of control and makes it easier to merge changes into the `main` branch.
 
 The easiest way to make a branch and start using it is to run:
 
