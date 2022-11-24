@@ -130,8 +130,8 @@ const buildSummaryTable = (orderId, order, products) => {
 const saveOrderToDB = async (order, products) => {
     try {
         let pool = await sql.createPool(sv.dbPoolConfig);
-        let orderId = await getCurrentOrderId(pool);
         await saveOrderSummaryToDB(order, pool);
+        let orderId = await getCurrentOrderId(pool);
         await saveOrderProductsToDB(orderId, products, pool);
         pool.end();
         return buildSummaryTable(orderId, order, products);
@@ -175,8 +175,8 @@ router.use("/", (req, res) => {
                 // content += content;
                 res.render("template", { title: "Order", content });
             });
-            // break out of promise chain
             return;
+            // break out of promise chain
         } else if (!productList) {
             content += `<h2>No Products in Cart</h2>`;
             content += `<h3><span class="link"><a href="/showcart">Back to Cart</a></span></h3>`;
