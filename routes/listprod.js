@@ -54,11 +54,23 @@ const createProductTable = (products, cols) => {
     for (let p of products) {
         table += "<tr>";
         table += `<td class="cell"><span class="link"><a href="/addcart?id=${p.productId}&name=${p.productName}&price=${p.productPrice}">Add to cart</a></span></td>`;
-        for (let k of keys)
-            table += `<td class="cell${k.toUpperCase().indexOf("ID") > -1 ? " t-center" : ""}">${
-                // if the attribute is a price, format it
-                k.toUpperCase().indexOf("PRICE") > -1 ? sv.PRICE_FORMATTER.format(p[k]) : p[k]
-            }</td>`;
+        for (let k of keys) {
+            let v = p[k];
+            let idCellClass = "";
+            // If the key is the ID, add a CSS class to center it
+            if (k === "productId") {
+                idCellClass = " t-center";
+            } else if (k === "productName") {
+                // If the key is the name, make it a link to the product page
+                v = `<span class="link"><a href="/product?id=${p.productId}">${v}</a></span>`;
+            }
+            // If the key is a price, format it
+            if (k.toUpperCase().indexOf("PRICE") > -1) {
+                v = sv.PRICE_FORMATTER.format(v);
+            }
+
+            table += `<td class="cell${idCellClass}">${v}</td>`;
+        }
         table += "</tr>";
     }
 

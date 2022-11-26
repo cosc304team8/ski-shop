@@ -201,3 +201,52 @@ th {
 .price {
     text-align: center;
 }
+
+/*
+    Product page
+*/
+
+.product {
+    min-width: 50%;
+    max-width: 90%;
+    margin: 0 auto;
+}
+
+.product img {
+    height: 25rem;
+    width: auto;
+    border: 0.01em solid lightgrey;
+}
+
+.product .button {
+    margin: 0;
+}
+
+.product-header {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.desc {
+    margin: 0 1em;
+    color: grey;
+    font-style: italic;
+}
+
+.product-meta {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.product-meta .desc {
+    margin: 0 0.5em;
+}
+
+.desc a {
+    color: grey;
+    text-decoration: underline;
+}

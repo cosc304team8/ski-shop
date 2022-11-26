@@ -16,8 +16,6 @@ import session from "express-session";
 import sql from "mysql2/promise";
 import path from "path";
 import { fileURLToPath } from "url";
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
 
 import * as loadData from "./routes/loaddata.js";
 import * as listOrder from "./routes/listorder.js";
@@ -27,6 +25,13 @@ import * as showCart from "./routes/showcart.js";
 import * as checkout from "./routes/checkout.js";
 import * as order from "./routes/order.js";
 import * as clearData from "./routes/cleardata.js";
+
+// Lab 8
+import * as product from "./routes/product.js";
+import * as displayImage from "./routes/displayImage.js";
+
+export const __filename = fileURLToPath(import.meta.url);
+export const __dirname = path.dirname(__filename);
 
 export const app = express();
 const { engine } = exphb;
@@ -114,7 +119,7 @@ app.set("view engine", "handlebars");
 // app.set("storeName", STORE_TITLE);
 // app.set("dbConfig", dbConfig);
 
-// Set up CSS
+// Set up static files
 app.use(express.static(path.join(__dirname, "public")));
 
 // Setting up Express.js routes.
@@ -128,6 +133,10 @@ app.use("/showcart", showCart.router);
 app.use("/checkout", checkout.router);
 app.use("/order", order.router);
 app.use("/cleardata", clearData.router);
+
+// Lab 8
+app.use("/product", product.router);
+app.use("/displayImage", displayImage.router);
 
 // Rendering the main page
 app.get("/", function (req, res) {
