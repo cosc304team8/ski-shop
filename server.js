@@ -25,7 +25,10 @@ import * as showCart from "./routes/showcart.js";
 import * as checkout from "./routes/checkout.js";
 import * as order from "./routes/order.js";
 import * as clearData from "./routes/cleardata.js";
+
+// Lab 8
 import * as product from "./routes/product.js";
+import * as displayImage from "./routes/displayImage.js";
 
 export const __filename = fileURLToPath(import.meta.url);
 export const __dirname = path.dirname(__filename);
@@ -130,7 +133,10 @@ app.use("/showcart", showCart.router);
 app.use("/checkout", checkout.router);
 app.use("/order", order.router);
 app.use("/cleardata", clearData.router);
+
+// Lab 8
 app.use("/product", product.router);
+app.use("/displayImage", displayImage.router);
 
 // Rendering the main page
 app.get("/", function (req, res) {

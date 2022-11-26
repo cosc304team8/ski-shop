@@ -213,16 +213,9 @@ th {
 }
 
 .product img {
-    width: 25rem;
     height: 25rem;
+    width: auto;
     border: 0.01em solid lightgrey;
-}
-
-.product-image {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-around;
-    align-items: center;
 }
 
 .product .button {

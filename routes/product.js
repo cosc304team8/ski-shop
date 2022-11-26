@@ -1,5 +1,6 @@
 import express from "express";
 import sql from "mysql2/promise";
+// import fetch from "node-fetch";
 
 import * as sv from "../server.js";
 
@@ -33,7 +34,7 @@ const getCategoryById = async (categoryId) => {
     }
 
     return result;
-}
+};
 
 const buildProductHTML = (product, category) => {
     let html = "";
@@ -51,8 +52,11 @@ const buildProductHTML = (product, category) => {
         product.productImage = "";
     }
     html += `<div class="product-image">`;
-    html += `<img src="${product.productImageURL}" alt="Image of ${product.productName}"/>`;
-    html += `<img src="data:image/jpeg;base64,${Buffer.from(product.productImage).toString('base64')}" alt="Image of ${product.productName}"/>`;
+    let imageSrc = `/displayImage?id=${product.productId}`;
+    if (product.productImageURL) {
+        imageSrc = product.productImageURL;
+    }
+    html += `<img src="${imageSrc}" alt="Image of ${product.productName}"/>`;
 
     html += `</div>`;
 
@@ -73,10 +77,8 @@ const buildProductHTML = (product, category) => {
     // Close product div
     html += `</div>`;
 
-
-
     return html;
-}
+};
 
 const createProductPage = async (productId) => {
     let product = await getProductById(productId);
@@ -91,24 +93,23 @@ const createProductPage = async (productId) => {
     let html = buildProductHTML(product[0], category[0]);
 
     return html;
-}
+};
 
 router.use("/", (req, res) => {
     // Get the product ID from the request
-    let productId = req.query.productId;
-    
+    let productId = req.query.id;
+
     // Variables for the template
     let content = "";
 
     // Get the product from the database (async)
     createProductPage(productId).then((html) => {
-
         content += html;
 
         res.render("template", {
             title: "Product",
             pageTitle: "Product",
-            content
+            content,
         });
     });
 });
