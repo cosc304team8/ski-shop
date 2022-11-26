@@ -55,8 +55,12 @@ const buildProductHTML = (product, category) => {
     let imageSrc = `/displayImage?id=${product.productId}`;
     if (product.productImageURL) {
         imageSrc = product.productImageURL;
+        html += `<img src="${imageSrc}" alt="Image of ${product.productName}"/>`;
     }
-    html += `<img src="${imageSrc}" alt="Image of ${product.productName}"/>`;
+    if (product.productImage) {
+        imageSrc = `/displayImage?id=${product.productId}`;
+        html += `<img src="${imageSrc}" alt="Image of ${product.productName}"/>`;
+    }
 
     html += `</div>`;
 
@@ -81,6 +85,8 @@ const buildProductHTML = (product, category) => {
 };
 
 const createProductPage = async (productId) => {
+    let data = {};
+
     let product = await getProductById(productId);
     if (product.length === 0) {
         return `<h1>Product Not Found</h1>`;
@@ -90,9 +96,10 @@ const createProductPage = async (productId) => {
     if (category.length === 0) {
         category = [{ categoryName: "Unknown category" }];
     }
-    let html = buildProductHTML(product[0], category[0]);
+    data.html = buildProductHTML(product[0], category[0]);
+    data.title = product[0].productName;
 
-    return html;
+    return data;
 };
 
 router.use("/", (req, res) => {
@@ -103,11 +110,11 @@ router.use("/", (req, res) => {
     let content = "";
 
     // Get the product from the database (async)
-    createProductPage(productId).then((html) => {
-        content += html;
+    createProductPage(productId).then((data) => {
+        content += data.html;
 
         res.render("template", {
-            title: "Product",
+            title: data.title,
             pageTitle: "Product",
             content,
         });
