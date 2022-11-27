@@ -312,3 +312,11 @@ th {
     padding: 0 0.5em;
     overflow: hidden;
 }
+
+/* 
+    Shipment page
+*/
+
+.shiplist li {
+    margin-bottom: 0.5em;
+}

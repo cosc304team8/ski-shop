@@ -22,7 +22,14 @@ router.post("/", function (req, res) {
         if (authenticatedUser) {
             // console.log(`authenticatedUser: ${authenticatedUser}`);
             req.session.authenticatedUser = authenticatedUser;
-            res.redirect("/");
+
+            let redirectUrl = req.session.redirectUrl;
+            if (redirectUrl) {
+                delete req.session.redirectUrl;
+                res.redirect(redirectUrl);
+            } else {
+                res.redirect("/");
+            }
         } else {
             req.session.loginMessage = "Invalid username or password";
             res.redirect("/login");

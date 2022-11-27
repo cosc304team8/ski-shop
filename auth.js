@@ -11,6 +11,7 @@ export const checkAuthentication = (req, res) => {
     if (!authenticated) {
         let url = req.protocol + "://" + req.get("host") + req.originalUrl;
         let loginMessage = `You have not been authorized to access the URL: ${url}`;
+        req.session.redirectUrl = url;
         req.session.loginMessage = loginMessage;
         res.redirect("/login");
     }

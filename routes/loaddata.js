@@ -46,6 +46,7 @@ router.use("/", function (req, res, next) {
     loadSQLFile("./data/data.sql", res).then((results) => {
         if (results.length > 0) {
             content += `<h2>Database loaded successfully!</h2>`;
+            content += `<p><span class="link"><a href="/stock">Click here to to stock warehouses.</a></span></p>`;
         } else {
             content += `<h2>Database load failed!</h2>`;
         }

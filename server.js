@@ -23,6 +23,8 @@ import * as validateLogin from "./routes/validateLogin.js";
 import * as admin from "./routes/admin.js";
 import * as logout from "./routes/logout.js";
 import * as customer from "./routes/customer.js";
+import * as stockWarehouse from "./routes/stockwarehouse.js";
+import * as shipment from "./routes/ship.js";
 
 // Export file paths
 export const __filename = fileURLToPath(import.meta.url);
@@ -147,6 +149,8 @@ app.use("/logout", logout.router);
 app.use("/admin", admin.router);
 app.use("/validateLogin", validateLogin.router);
 app.use("/customer", customer.router);
+app.use("/stock", stockWarehouse.router);
+app.use("/ship", shipment.router);
 
 // Rendering the main page
 app.get("/", function (req, res) {
