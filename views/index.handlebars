@@ -1,12 +1,23 @@
 <div class="container">
-    <h1>Welcome to {{storeName}} 🎿</h1>
-    <h2><em>Please read the README first as it has info about our usage of MySQL over Microsoft SQL Server.</em></h2>
+    <div class="welcome">
+        <h1>Welcome to {{storeName}} 🎿</h1>
+
+        {{#if authenticatedUser}}
+            <div class="userGreeting">
+                <p>
+                    Logged in as
+                </p>
+                <code>{{authenticatedUser}}</code>
+            </div>
+        {{/if}}
+    </div>
     <p class="para">
         Check the links above or click
         <span class="link"><a href="/listprod">this link</a></span>
         to begin shopping.
     </p>
     <p class="para">
-        This project's source code is available on <span class="link"><a href="https://github.com/cosc304team8/ski-shop.git">GitHub</a>.
+        This project's source code is available on
+        <span class="link"><a href="https://github.com/cosc304team8/ski-shop.git">GitHub</a>.</span>
     </p>
 </div>

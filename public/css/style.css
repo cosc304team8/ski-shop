@@ -50,6 +50,13 @@ th {
     padding: 0.5em;
 }
 
+.welcome {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
 .table {
     table-layout: fixed;
     display: table;
@@ -249,4 +256,59 @@ th {
 .desc a {
     color: grey;
     text-decoration: underline;
+}
+
+/*
+    Login page
+*/
+
+.login {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-width: 50%;
+    max-width: 90%;
+    margin: 0 auto;
+}
+
+.loginForm {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.error {
+    color: red;
+}
+
+.userGreeting {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    height: 2em;
+    color: #444;
+    font-size: 14pt;
+    border: 0.05em solid #ccc;
+    border-radius: 0.25em;
+    overflow: hidden;
+    z-index: 1;
+}
+
+.userGreeting p {
+    margin: 0 0.5em;
+}
+
+.userGreeting code {
+    color: white;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    height: 2em;
+    background-color: black;
+    z-index: 0;
+    padding: 0 0.5em;
+    overflow: hidden;
 }

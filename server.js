@@ -1,15 +1,3 @@
-// const express = require("express");
-// const exphbs = require("express-handlebars");
-// const session = require("express-session");
-
-// let loadData = require("./routes/loaddata");
-// let listOrder = require("./routes/listorder");
-// let listProd = require("./routes/listprod");
-// let addCart = require("./routes/addcart");
-// let showCart = require("./routes/showcart");
-// let checkout = require("./routes/checkout");
-// let order = require("./routes/order");
-
 import express from "express";
 import exphb from "express-handlebars";
 import session from "express-session";
@@ -29,12 +17,22 @@ import * as clearData from "./routes/cleardata.js";
 // Lab 8
 import * as product from "./routes/product.js";
 import * as displayImage from "./routes/displayImage.js";
+import * as login from "./routes/login.js";
+import * as validateLogin from "./routes/validateLogin.js";
+import * as admin from "./routes/admin.js";
+import * as logout from "./routes/logout.js";
+import bodyParser from "body-parser";
 
+// Export file paths
 export const __filename = fileURLToPath(import.meta.url);
 export const __dirname = path.dirname(__filename);
 
 export const app = express();
 const { engine } = exphb;
+
+// Enable parsing of requests for POST requests
+app.use(express.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
 /**
  * Global Variables
@@ -63,28 +61,34 @@ export const dbPoolConfig = {
 /**
  * HTML Table Generator for MySQL
  */
-export const tableFromResults = (results, res) => {
-    res.write("<table>");
+export const tableFromResults = (results, cols) => {
+    let table = `<table class="table">`;
     for (let i = 0; i < results.length; i++) {
         let r = results[i];
         let keys = Object.keys(r);
 
         if (i === 0) {
-            res.write("<tr>");
-            for (let k of keys) {
-                res.write(`<th>${k}</th>`);
+            table += "<tr>";
+            // Use cols if provided
+            for (let k of cols ? cols : keys) {
+                table += `<th class="hcell">${k}</th>`;
             }
-            res.write("</tr>");
+            table += "</tr>";
         }
 
-        res.write("<tr>");
+        table += "<tr>";
         for (let k of keys) {
-            res.write(`<td>${k.toUpperCase().indexOf("PRICE") > -1 ? PRICE_FORMATTER.format(r[k]) : r[k]}</td>`);
-        }
-        res.write("</tr>");
-    }
+            let value = r[k];
+            if (k.toUpperCase().indexOf("PRICE") > -1 || k.toUpperCase().indexOf("$"))
+                value = PRICE_FORMATTER.format(r[k]);
 
-    res.write("</table>");
+            table += `<td class="cell">${value}</td>`;
+        }
+
+        table += "</tr>";
+    }
+    table += "</table>";
+    return table;
 };
 
 export const tableFromQuery = async (query, res) => {
@@ -101,12 +105,12 @@ export const tableFromQuery = async (query, res) => {
 app.use(
     session({
         secret: "COSC 304 smells (good)",
-        resave: false,
+        resave: true,
         saveUninitialized: false,
         cookie: {
             httpOnly: false,
             secure: false,
-            maxAge: 60000,
+            maxAge: 300000, // 5 minutes
         },
     })
 );
@@ -137,13 +141,19 @@ app.use("/cleardata", clearData.router);
 // Lab 8
 app.use("/product", product.router);
 app.use("/displayImage", displayImage.router);
+app.use("/login", login.router);
+app.use("/logout", logout.router);
+app.use("/admin", admin.router);
+app.use("/validateLogin", validateLogin.router);
 
 // Rendering the main page
 app.get("/", function (req, res) {
+    // console.log(`authenticatedUser: ${req.session.authenticatedUser}`);
     res.render("index", {
         title: "Home",
         pageTitle: "Kelowna Alpine",
         storeName: STORE_TITLE,
+        authenticatedUser: req.session.authenticatedUser,
     });
 });
 

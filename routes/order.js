@@ -130,8 +130,8 @@ const buildSummaryTable = (orderId, order, products) => {
 const saveOrderToDB = async (order, products) => {
     try {
         let pool = await sql.createPool(sv.dbPoolConfig);
-        await saveOrderSummaryToDB(order, pool);
         let orderId = await getCurrentOrderId(pool);
+        await saveOrderSummaryToDB(order, pool);
         await saveOrderProductsToDB(orderId, products, pool);
         pool.end();
         return buildSummaryTable(orderId, order, products);
