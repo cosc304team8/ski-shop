@@ -1,0 +1,39 @@
+<div class="container">
+    {{#if pageTitle}}
+        <h2>{{pageTitle}}</h2>
+    {{/if}}
+    {{#if customer}}
+        <table class="table">
+            <thead>
+                <tr>
+                    <th class="hcell">First Name</th>
+                    <th class="hcell">Last Name</th>
+                    <th class="hcell">Email</th>
+                    <th class="hcell">Phone</th>
+                    <th class="hcell">Address</th>
+                    <th class="hcell">City</th>
+                    <th class="hcell">State</th>
+                    <th class="hcell">Postal Code</th>
+                    <th class="hcell">Country</th>
+                    <th class="hcell">User ID</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <th class="hcell">ID</th>
+                    <td class="cell t-center">{{customer.customerId}}</td>
+                    <td class="cell">{{customer.firstName}}</td>
+                    <td class="cell">{{customer.lastName}}</td>
+                    <td class="cell">{{customer.email}}</td>
+                    <td class="cell">{{customer.phoneNum}}</td>
+                    <td class="cell">{{customer.address}}</td>
+                    <td class="cell">{{customer.city}}</td>
+                    <td class="cell">{{customer.state}}</td>
+                    <td class="cell">{{customer.postalCode}}</td>
+                    <td class="cell">{{customer.country}}</td>
+                    <td class="cell">{{customer.userid}}</td>
+                </tr>
+            </tbody>
+        </table>
+    {{/if}}
+</div>

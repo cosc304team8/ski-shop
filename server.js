@@ -15,13 +15,14 @@ import * as order from "./routes/order.js";
 import * as clearData from "./routes/cleardata.js";
 
 // Lab 8
+import bodyParser from "body-parser";
 import * as product from "./routes/product.js";
 import * as displayImage from "./routes/displayImage.js";
 import * as login from "./routes/login.js";
 import * as validateLogin from "./routes/validateLogin.js";
 import * as admin from "./routes/admin.js";
 import * as logout from "./routes/logout.js";
-import bodyParser from "body-parser";
+import * as customer from "./routes/customer.js";
 
 // Export file paths
 export const __filename = fileURLToPath(import.meta.url);
@@ -145,6 +146,7 @@ app.use("/login", login.router);
 app.use("/logout", logout.router);
 app.use("/admin", admin.router);
 app.use("/validateLogin", validateLogin.router);
+app.use("/customer", customer.router);
 
 // Rendering the main page
 app.get("/", function (req, res) {
