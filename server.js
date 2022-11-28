@@ -25,6 +25,7 @@ import * as logout from "./routes/logout.js";
 import * as customer from "./routes/customer.js";
 import * as stockWarehouse from "./routes/stockwarehouse.js";
 import * as shipment from "./routes/ship.js";
+import * as index from "./routes/index.js";
 
 // Export file paths
 export const __filename = fileURLToPath(import.meta.url);
@@ -142,6 +143,7 @@ app.use("/order", order.router);
 app.use("/cleardata", clearData.router);
 
 // Lab 8
+app.use("/", index.router);
 app.use("/product", product.router);
 app.use("/displayImage", displayImage.router);
 app.use("/login", login.router);
@@ -153,15 +155,15 @@ app.use("/stock", stockWarehouse.router);
 app.use("/ship", shipment.router);
 
 // Rendering the main page
-app.get("/", function (req, res) {
-    // console.log(`authenticatedUser: ${req.session.authenticatedUser}`);
-    res.render("index", {
-        title: "Home",
-        pageTitle: "Kelowna Alpine",
-        storeName: STORE_TITLE,
-        authenticatedUser: req.session.authenticatedUser,
-    });
-});
+// app.get("/", function (req, res) {
+//     // console.log(`authenticatedUser: ${req.session.authenticatedUser}`);
+//     res.render("index", {
+//         title: "Home",
+//         pageTitle: "Kelowna Alpine",
+//         storeName: STORE_TITLE,
+//         authenticatedUser: req.session.authenticatedUser,
+//     });
+// });
 
 // Starting our Express app
 app.listen(3000);
