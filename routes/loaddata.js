@@ -29,7 +29,7 @@ const loadSQLFile = async (filename, res) => {
         }
         pool.end();
     } catch (err) {
-        console.error(`Error in loaddata.js: ${err}`);
+        console.error(`loaddata.js: ${err}`);
         // res.status(500).end();
     } finally {
         return results;

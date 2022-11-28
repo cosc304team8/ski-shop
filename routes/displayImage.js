@@ -19,7 +19,7 @@ const getImageById = async (id) => {
             throw new Error(`No image found with id ${id}`);
         }
     } catch (err) {
-        console.log(`Error in getImageById: ${err.message}`);
+        console.log(`getImageById: ${err.message}`);
     }
     return image;
 };

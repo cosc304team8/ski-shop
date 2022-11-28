@@ -28,7 +28,7 @@ const clearFromSQLFile = async (filename, res) => {
         }
         pool.end();
     } catch (err) {
-        console.error(`Error in cleardata.js: ${err}`);
+        console.error(`cleardata.js: ${err}`);
     } finally {
         return results;
     }
@@ -37,7 +37,7 @@ const clearFromSQLFile = async (filename, res) => {
 router.use("/", (req, res) => {
     clearFromSQLFile("./data/clear.sql", res).then((v) => {
         let content = "";
-        
+
         if (v.length > 0) {
             content += `<h2>Data cleared successfully!</h2>`;
         } else {

@@ -16,7 +16,7 @@ const getCustomerById = async (userid, attr = []) => {
         if (rows.length > 0) customer = rows[0];
         pool.end();
     } catch (err) {
-        console.log(`Error in getCustomerById: ${err}`);
+        console.log(`getCustomerById: ${err}`);
     }
 
     return customer;

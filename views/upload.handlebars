@@ -1,0 +1,51 @@
+<div class="container">
+    <div class="upload">
+        {{#if pageTitle}}
+            <h2>{{pageTitle}}</h2>
+        {{/if}}
+
+        {{#if uploadSuccess}}
+            <p class="success">{{uploadSuccess}}</p>
+        {{else}}
+            {{#if uploadError}}
+                <p class="error">{{uploadError}}</p>
+            {{/if}}
+            <br />
+            <form class="uploadForm" name="uploadForm" method="POST" action="/upload" enctype="multipart/form-data">
+                <table class="table">
+                    {{#if productIdSelect}}
+                        <tr>
+                            <td>{{{productIdSelect}}}</td>
+                            <td>Product ID</td>
+                        </tr>
+                    {{/if}}
+                    <tr>
+                        <td>
+
+                            <input class="button" type="button" id="uploadButton" value="PNG/JPEG" />
+                        </td>
+                        <td>
+                            <label id="productImageLabel" for="uploadButton">
+                                Select a file to upload...
+                            </label>
+
+                            <input
+                                class="textbox"
+                                type="file"
+                                id="productImage"
+                                name="productImage"
+                                accept="image/png, image/jpeg"
+                            />
+                            <br />
+                        </td>
+                    </tr>
+                </table>
+                <br />
+                <input class="button" type="submit" name="submitupload" value="Upload" />
+            </form>
+            <script src="/scripts/uploadbutton.js">
+            </script>
+        {{/if}}
+    </div>
+
+</div>

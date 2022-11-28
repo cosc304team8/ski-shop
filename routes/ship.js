@@ -33,7 +33,7 @@ const orderProductsById = async (conn, orderId, warehouse = 0) => {
             if (++numProducts > 3) break;
         }
     } catch (err) {
-        throw new Error(`Error in orderProductById: ${err}`);
+        throw new Error(`orderProductById: ${err}`);
     }
     return shipment;
 };
@@ -102,7 +102,7 @@ const validateOrderId = async (orderId) => {
 
         if (rows.length > 0) return pool;
     } catch (err) {
-        throw new Error(`Error in validateOrderId: ${err}`);
+        throw new Error(`validateOrderId: ${err}`);
     }
     return false;
 };
@@ -120,7 +120,7 @@ const insertShipmentRecord = async (desc, warehouseId) => {
 
         if (rows.affectedRows === 1) return true;
     } catch (err) {
-        throw new Error(`Error in insertShipmentRecord: ${err}`);
+        throw new Error(`insertShipmentRecord: ${err}`);
     }
     return false;
 };
@@ -164,9 +164,11 @@ const createShipStatement = async (orderId) => {
         }
     } catch (err) {
         console.log(`Error in createShipStatement: ${err}`);
-        if (conn) conn.rollback();
+        if (conn) await conn.rollback();
         if (pool) pool.end();
-        stmt = `<p class="error">${err}</p>`;
+        stmt = `<p class="error">Error: ${err}</p>`;
+    } finally {
+        await conn.release();
     }
     return stmt;
 };

@@ -7,17 +7,6 @@ import * as sv from "../server.js";
 export const router = express.Router();
 
 router.post("/", function (req, res) {
-    // Have to preserve async context since we make an async call
-    // to the database in the validateLogin function.
-    // (async () => {
-    //     let authenticatedUser = await validateLogin(req);
-    //     if (authenticatedUser) {
-    //         res.redirect("/");
-    //     } else {
-    //         res.redirect("/login");
-    //     }
-    // })();
-
     validateLogin(req).then((authenticatedUser) => {
         if (authenticatedUser) {
             // console.log(`authenticatedUser: ${authenticatedUser}`);

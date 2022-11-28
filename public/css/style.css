@@ -117,6 +117,14 @@ th {
     border-color: #999;
 }
 
+td .dropdown {
+    width: 100%;
+}
+
+td .button {
+    width: 100%;
+}
+
 .dropdown {
     font-size: 1.2em;
     padding: 0.3em 0.5em;
@@ -283,6 +291,10 @@ th {
     color: red;
 }
 
+.success {
+    color: green;
+}
+
 .userGreeting {
     display: flex;
     flex-direction: row;
@@ -319,4 +331,24 @@ th {
 
 .shiplist li {
     margin-bottom: 0.5em;
+}
+
+/*
+    Upload page
+*/
+
+#productImage {
+    display: none;
+}
+
+.upload {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.uploadForm td {
+    padding: 0.5em;
 }

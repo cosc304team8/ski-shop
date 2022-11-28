@@ -11,13 +11,32 @@
             </div>
         {{/if}}
     </div>
-    <p class="para">
-        Check the links above or click
-        <span class="link"><a href="/listprod">this link</a></span>
-        to begin shopping.
-    </p>
-    <p class="para">
-        This project's source code is available on
-        <span class="link"><a href="https://github.com/cosc304team8/ski-shop.git">GitHub</a>.</span>
-    </p>
+    {{#if authenticatedUser}}
+        <h3>Since you're logged in...</h3>
+        <ul>
+            <li>
+                <span class="link"><a href="/upload">Upload a product image</a></span>
+            </li>
+            <li>
+                <span class="link"><a href="/customer">View your customer profile</a></span>
+            </li>
+            <li>
+                <span class="link"><a href="/admin">View orders summary</a></span>
+            </li>
+        </ul>
+    {{else}}
+        <p class="para">
+            <span class="link"><a href="/login">Click here to login.</a></span>
+        </p>
+        <p class="para">
+            Check the links above or click
+            <span class="link"><a href="/listprod">this link</a></span>
+            to begin shopping.
+        </p>
+        <p class="para">
+            This project's source code is available on
+            <span class="link"><a href="https://github.com/cosc304team8/ski-shop.git">GitHub</a>.</span>
+        </p>
+
+    {{/if}}
 </div>

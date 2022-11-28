@@ -26,6 +26,8 @@ import * as customer from "./routes/customer.js";
 import * as stockWarehouse from "./routes/stockwarehouse.js";
 import * as shipment from "./routes/ship.js";
 import * as index from "./routes/index.js";
+import * as upload from "./routes/upload.js";
+import bb from "express-busboy";
 
 // Export file paths
 export const __filename = fileURLToPath(import.meta.url);
@@ -34,9 +36,18 @@ export const __dirname = path.dirname(__filename);
 export const app = express();
 const { engine } = exphb;
 
+// File handling for images
+const bbOptions = {
+    upload: true,
+    path: "./public/img/",
+    alloqwedPath: /^\/upload$/,
+    mimeTypeList: ["image/png", "image/jpg", "image/jpeg"],
+};
+bb.extend(app, bbOptions);
+
 // Enable parsing of requests for POST requests
 app.use(express.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+// app.use(bodyParser.urlencoded({ extended: true }));
 
 /**
  * Global Variables
@@ -60,47 +71,6 @@ export const dbPoolConfig = {
     waitForConnections: true,
     connectionLimit: 10,
     queueLimit: 0,
-};
-
-/**
- * HTML Table Generator for MySQL
- */
-export const tableFromResults = (results, cols) => {
-    let table = `<table class="table">`;
-    for (let i = 0; i < results.length; i++) {
-        let r = results[i];
-        let keys = Object.keys(r);
-
-        if (i === 0) {
-            table += "<tr>";
-            // Use cols if provided
-            for (let k of cols ? cols : keys) {
-                table += `<th class="hcell">${k}</th>`;
-            }
-            table += "</tr>";
-        }
-
-        table += "<tr>";
-        for (let k of keys) {
-            let value = r[k];
-            if (k.toUpperCase().indexOf("PRICE") > -1 || k.toUpperCase().indexOf("$"))
-                value = PRICE_FORMATTER.format(r[k]);
-
-            table += `<td class="cell">${value}</td>`;
-        }
-
-        table += "</tr>";
-    }
-    table += "</table>";
-    return table;
-};
-
-export const tableFromQuery = async (query, res) => {
-    const conn = await sql.createPool(dbPoolConfig);
-
-    let [rows] = await conn.query(query);
-
-    tableFromResults(rows, res);
 };
 
 // Setting up the session.
@@ -153,19 +123,48 @@ app.use("/validateLogin", validateLogin.router);
 app.use("/customer", customer.router);
 app.use("/stock", stockWarehouse.router);
 app.use("/ship", shipment.router);
-
-// Rendering the main page
-// app.get("/", function (req, res) {
-//     // console.log(`authenticatedUser: ${req.session.authenticatedUser}`);
-//     res.render("index", {
-//         title: "Home",
-//         pageTitle: "Kelowna Alpine",
-//         storeName: STORE_TITLE,
-//         authenticatedUser: req.session.authenticatedUser,
-//     });
-// });
+app.use("/upload", upload.router);
 
 // Starting our Express app
 app.listen(3000);
 
-// module.exports = app;
+/**
+ * HTML Table Generator for MySQL
+ */
+export const tableFromResults = (results, cols) => {
+    let table = `<table class="table">`;
+    for (let i = 0; i < results.length; i++) {
+        let r = results[i];
+        let keys = Object.keys(r);
+
+        if (i === 0) {
+            table += "<tr>";
+            // Use cols if provided
+            for (let k of cols ? cols : keys) {
+                table += `<th class="hcell">${k}</th>`;
+            }
+            table += "</tr>";
+        }
+
+        table += "<tr>";
+        for (let k of keys) {
+            let value = r[k];
+            if (k.toUpperCase().indexOf("PRICE") > -1 || k.toUpperCase().indexOf("$"))
+                value = PRICE_FORMATTER.format(r[k]);
+
+            table += `<td class="cell">${value}</td>`;
+        }
+
+        table += "</tr>";
+    }
+    table += "</table>";
+    return table;
+};
+
+export const tableFromQuery = async (query, res) => {
+    const conn = await sql.createPool(dbPoolConfig);
+
+    let [rows] = await conn.query(query);
+
+    tableFromResults(rows, res);
+};
