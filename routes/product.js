@@ -36,7 +36,7 @@ const getCategoryById = async (categoryId) => {
     return result;
 };
 
-const buildProductHTML = (product, category) => {
+const buildProductHTML = async (product, category, warehouseId) => {
     let html = "";
 
     html += `<div class="product">`;
@@ -76,6 +76,7 @@ const buildProductHTML = (product, category) => {
     html += `<input type="hidden" name="name" value="${product.productName}"/>`;
     html += `<input type="hidden" name="price" value="${product.productPrice}"/>`;
     html += `<input class="button" type="submit" value="Add to Cart"/>`;
+    html += await createSelectFromList(await productWarehouseQuantitiesList(product.productId, warehouseId));
     html += `</form>`;
 
     // Close product div
@@ -84,7 +85,7 @@ const buildProductHTML = (product, category) => {
     return html;
 };
 
-const createProductPage = async (productId) => {
+const createProductPage = async (productId, warehouseId) => {
     let data = {};
 
     let product = await getProductById(productId);
@@ -96,26 +97,57 @@ const createProductPage = async (productId) => {
     if (category.length === 0) {
         category = [{ categoryName: "Unknown category" }];
     }
-    data.html = buildProductHTML(product[0], category[0]);
+    data.html = await buildProductHTML(product[0], category[0], warehouseId);
     data.title = product[0].productName;
 
     return data;
 };
 
+const productWarehouseQuantitiesList = async (productId, warehouse = 1) => {
+    let list = [];
+    if (!warehouse) warehouse = 1;
+
+    try {
+        let pool = sql.createPool(sv.dbPoolConfig);
+        let q = "SELECT quantity FROM productinventory WHERE productId = ? AND warehouseId = ? ORDER BY quantity ASC;";
+        let [rows, fields] = await pool.query(q, [productId, warehouse]);
+        if (rows.length > 0) {
+            for (let i = 0; i < rows[0].quantity; i++) {
+                list.push({ qty: i + 1, warehouse });
+            }
+        }
+        pool.end();
+    } catch (err) {
+        throw new Error(`productQtyList: ${err}`);
+    }
+    return list;
+};
+
+const createSelectFromList = (list) => {
+    let select = "";
+    select += `<select class="dropdown" name="qty" required>`;
+    for (let item of list) {
+        select += `<option value="${item.qty}">${item.qty}</option>`;
+    }
+    select += `</select>`;
+    select += `<span class="desc">in warehouse ${list[0].warehouse}</span>`;
+    return select;
+};
+
 router.use("/", (req, res) => {
     // Get the product ID from the request
     let productId = req.query.id;
+    let warehouseId = req.query.warehouse;
 
     // Variables for the template
     let content = "";
 
     // Get the product from the database (async)
-    createProductPage(productId).then((data) => {
+    createProductPage(productId, warehouseId).then((data) => {
         content += data.html;
 
         res.render("template", {
             title: data.title,
-            pageTitle: "Product",
             content,
         });
     });

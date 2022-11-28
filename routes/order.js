@@ -6,6 +6,7 @@ import express from "express";
 import sql from "mysql2/promise";
 import moment from "moment";
 import * as sv from "../server.js";
+import { checkAuthentication } from "../auth.js";
 
 export const router = express.Router();
 
@@ -13,20 +14,21 @@ const checkCustomerExists = async (customerId) => {
     let result = false;
 
     customerId = parseInt(customerId);
-    if (typeof customerId !== "number") {
-        console.log(`Customer ID is not a number: typeof ${customerId} = ${typeof customerId}`);
-        return false;
+    if (isNaN(customerId)) {
+        console.log(`Customer ID is NaN: typeof customerId = ${typeof customerId}`);
+        result = false;
+    } else {
+        try {
+            let pool = await sql.createPool(sv.dbPoolConfig);
+            let [rows, fields] = await pool.query("SELECT customerId FROM customer WHERE customerId = ?;", [
+                customerId,
+            ]);
+            pool.end();
+            result = rows.length > 0;
+        } catch (err) {
+            console.error(`Error loading customer table: ${err}`);
+        }
     }
-
-    try {
-        let pool = await sql.createPool(sv.dbPoolConfig);
-        let [rows, fields] = await pool.query("SELECT customerId FROM customer WHERE customerId = ?;", [customerId]);
-        pool.end();
-        result = rows.length > 0;
-    } catch (err) {
-        console.error(`Error loading customer table: ${err}`);
-    }
-
     return result;
 };
 
@@ -144,17 +146,23 @@ const saveOrderToDB = async (order, products) => {
 router.use("/", (req, res) => {
     let content = "";
 
+    let authenticated = checkAuthentication(req, res);
+
     let productList = false;
     if (req.session.productList && req.session.productList.length > 0) {
         productList = req.session.productList;
     }
 
-    content = "<h1>Order Processing</h1>";
     let customerId = req.query.customerId;
+    if (!customerId) {
+        customerId = req.session.authenticatedUser.customerId;
+    }
+
+    console.log(JSON.stringify(req.session));
 
     // Validate info first
-    checkCustomerExists(customerId).then((result) => {
-        if (result && productList) {
+    checkCustomerExists(customerId).then((exists) => {
+        if (exists && productList) {
             // Prepare order object
             let order = {
                 orderDate: moment().format("YYYY-MM-DD HH:mm:ss"),
@@ -166,22 +174,23 @@ router.use("/", (req, res) => {
             }
             // Save order to database
             saveOrderToDB(order, productList).then((table) => {
+                content += `<h2>Order Successful</h2>`;
                 content += table;
 
                 content += `<h2>Thank you for your order! <span class="link"><a href="/">Return home.</a></span></h2>`;
 
                 // Clear session cart
-                req.session.productList = [];
+                delete req.session.productList;
                 // content += content;
                 res.render("template", { title: "Order", content });
             });
             return;
             // break out of promise chain
+        } else if (!exists) {
+            content += `<h2>Invalid Customer ID: ${customerId}</h2>`;
+            content += `<h3><span class="link"><a href="/showcart">Back to Cart</a></span></h3>`;
         } else if (!productList) {
             content += `<h2>No Products in Cart</h2>`;
-            content += `<h3><span class="link"><a href="/showcart">Back to Cart</a></span></h3>`;
-        } else {
-            content += `<h2>Invalid Customer ID</h2>`;
             content += `<h3><span class="link"><a href="/showcart">Back to Cart</a></span></h3>`;
         }
         res.render("template", { title: "Order", content });

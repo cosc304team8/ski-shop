@@ -39,11 +39,11 @@ const validateLogin = async (req) => {
     try {
         let pool = sql.createPool(sv.dbPoolConfig);
 
-        let q = "SELECT userid FROM customer WHERE userid = ? AND password = ?";
+        let q = "SELECT customerId, firstName, lastName, userid FROM customer WHERE userid = ? AND password = ?";
         let [rows, fields] = await pool.query(q, [username, password]);
 
         if (rows.length > 0) {
-            authenticatedUser = rows[0].userid;
+            authenticatedUser = { ...rows[0] };
         }
     } catch (err) {
         console.log(err);

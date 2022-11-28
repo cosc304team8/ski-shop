@@ -56,18 +56,34 @@ const prepareWarehouses = async () => {
 const populateAllWarehouses = async (products) => {
     try {
         let pool = sql.createPool(sv.dbPoolConfig);
-        let [rows] = await pool.query("SELECT warehouseid FROM warehouse;");
-        let warehouses = rows;
+        let [rows] = await pool.query("SELECT warehouseId FROM warehouse;");
+        let warehouses = [...rows];
 
         if (products.length > 0 && warehouses.length > 0) {
             if (warehouses.length > 0) {
                 // For each warehouse, add a random number of every product
-                for (let w of warehouses) {
-                    for (let p of products) {
-                        let q = "INSERT INTO productinventory (warehouseId, productId, quantity, price) VALUES ?";
-                        let [rows] = await pool.query(q, [
-                            [[w.warehouseid, p.productId, getRandomInt(1, 100), parseFloat(p.productPrice)]],
-                        ]);
+                for (let p of products) {
+                    for (let w of warehouses) {
+                        let [rows] = await pool.query(
+                            "SELECT productId FROM productinventory WHERE productId = ? AND warehouseId = ?;",
+                            [p.productId, w.warehouseId]
+                        );
+
+                        if (rows.length > 0) {
+                            let q =
+                                "UPDATE productinventory SET quantity = ?, price = ? WHERE warehouseId = ? AND productId = ?;";
+                            [rows] = await pool.query(q, [
+                                getRandomInt(1, 100),
+                                parseFloat(p.productPrice),
+                                w.warehouseId,
+                                p.productId,
+                            ]);
+                        } else {
+                            let q = "INSERT INTO productinventory (warehouseId, productId, quantity, price) VALUES ?";
+                            [rows] = await pool.query(q, [
+                                [[w.warehouseid, p.productId, getRandomInt(1, 100), parseFloat(p.productPrice)]],
+                            ]);
+                        }
                     }
                 }
 

@@ -87,7 +87,7 @@ const productIdList = async () => {
 
 const createSelectFromList = (list) => {
     let select = "";
-    select += `<select class="dropdown" id="productId" name="productId">`;
+    select += `<select class="dropdown" id="productId" name="productId" required>`;
     for (let item of list) {
         select += `<option value="${item.id}">${item.id}. ${item.name}</option>`;
     }
@@ -157,12 +157,18 @@ router.use("/", (req, res) => {
         productIdList().then((list) => {
             let select = createSelectFromList(list);
 
+            let success = req.session.uploadSuccess;
+            req.session.uploadSuccess = false;
+
+            let error = req.session.uploadError;
+            req.session.uploadError = false;
+
             res.render("upload", {
                 title: "Upload Product Image",
                 pageTitle: "Upload Image",
                 content: "Upload an image to the database",
-                uploadSuccess: req.session.uploadSuccess,
-                uploadError: req.session.uploadError,
+                uploadSuccess: success,
+                uploadError: error,
                 productIdSelect: select,
             });
         });

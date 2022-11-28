@@ -28,7 +28,7 @@ router.get("/", function (req, res, next) {
     }
 
     // Update quantity if add same item to order again
-    let qty = req.query.quantity ? req.query.quantity : 1;
+    let qty = req.query.qty ? req.query.qty : 1;
     if (productList[id]) {
         productList[id].quantity = productList[id].quantity + qty;
     } else {

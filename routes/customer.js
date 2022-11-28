@@ -6,14 +6,14 @@ import { checkAuthentication } from "../auth.js";
 export const router = express.Router();
 
 const getCustomerById = async (userid, attr = []) => {
-    let customer = [];
+    let customer = {};
     try {
         let pool = sql.createPool(sv.dbPoolConfig);
 
         let q = `SELECT ${attr.length > 0 ? attr.join(", ") : "*"} FROM customer WHERE userid = ?;`;
         let [rows, fields] = await pool.query(q, [userid]);
 
-        if (rows.length > 0) customer = rows[0];
+        if (rows.length > 0) customer = { ...rows[0] };
         pool.end();
     } catch (err) {
         console.log(`getCustomerById: ${err}`);
@@ -38,7 +38,7 @@ router.get("/", function (req, res, next) {
     let authenticated = checkAuthentication(req, res);
 
     if (authenticated) {
-        let userid = req.session.authenticatedUser;
+        let userid = req.session.authenticatedUser.userid;
 
         let attr = [
             "customerId",

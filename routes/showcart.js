@@ -33,8 +33,8 @@ router.use("/", function (req, res, next) {
             total = total + product.quantity * product.price;
         }
         content += `<tr>`;
-        content += `<td class="cell t-right" colspan="3"></td>`;
-        content += `<td  class="cell" colspan="1" align="right"><b>Order Total:</b></td>`;
+        // content += `<td class="cell t-right" colspan="3"></td>`;
+        content += `<td  class="cell" colspan="4" align="right"><b>Order Total:</b></td>`;
         content += `<td class="cell price">${sv.PRICE_FORMATTER.format(total)}</td></tr>`;
         content += "</tbody>";
         content += "</table>";
@@ -49,7 +49,6 @@ router.use("/", function (req, res, next) {
 
     res.render("template", {
         title: "Shopping Cart",
-        pageTitle: `${sv.STORE_TITLE}`,
         content,
     });
 

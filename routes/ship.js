@@ -94,17 +94,18 @@ const updateWarehouseQuantity = async (conn, warehouseId, productId, qty) => {
 const validateOrderId = async (orderId) => {
     if (orderId === undefined) return false;
 
-    try {
-        let pool = await sql.createPool(sv.dbPoolConfig);
+    let pool = await sql.createPool(sv.dbPoolConfig);
+    let found = false;
 
+    try {
         let q = "SELECT orderId FROM ordersummary WHERE orderId = ?";
         let [rows, fields] = await pool.query(q, [orderId]);
 
-        if (rows.length > 0) return pool;
+        if (rows.length > 0) found = true;
     } catch (err) {
         throw new Error(`validateOrderId: ${err}`);
     }
-    return false;
+    return { pool, found };
 };
 
 /*
@@ -130,29 +131,36 @@ const insertShipmentRecord = async (desc, warehouseId) => {
 */
 const createShipStatement = async (orderId) => {
     let stmt = "";
-    let pool = null;
-    let conn = null;
+    let { pool, found } = await validateOrderId(orderId);
+    if (!found) {
+        return `<p class="error">Order ${orderId} not found</p>`;
+    }
+    let conn = await pool.getConnection();
+    let orderDetails = [];
+
     try {
-        let pool = await validateOrderId(orderId);
-        let orderDetails = [];
-        if (pool) {
-            let conn = await pool.getConnection();
-            conn.beginTransaction();
-            orderDetails = await orderProductsById(conn, orderId, 1);
-            conn.commit();
-            pool.end();
-        }
+        await conn.beginTransaction();
+        orderDetails = await orderProductsById(conn, orderId, 1);
+        await conn.commit();
+        await pool.end();
 
         if (orderDetails.length > 0) {
             let record = [];
 
             stmt += `<ol class="shiplist">`;
+            let numOrders = 0;
             for (let order of orderDetails) {
-                stmt += `<li>Ordered ${order.quantity} of Product #${order.productId} from Warehouse #${
+                stmt += `<li>Ordered <code class="code">${order.quantity}</code> of <code class="code">Product #${
+                    order.productId
+                }</code> from <code class="code">Warehouse #${
                     order.warehouseId
-                }<br/>Previous inventory: ${order.inventory}, New inventory: ${order.inventory - order.quantity}</li>`;
+                }</code><br/>Previous inventory: <code class="code">${
+                    order.inventory
+                }</code>, New inventory: <code class="code">${order.inventory - order.quantity}</code></li>`;
 
                 record.push(`(prod ${order.productId} x${order.quantity})`);
+
+                if (++numOrders > 3) break;
             }
 
             stmt += "</ol>";
@@ -194,21 +202,4 @@ router.get("/", function (req, res, next) {
             pageTitle: `No order id provided`,
         });
     }
-
-    // (async function () {
-    //     try {
-    //         let pool = await sql.connect(dbConfig);
-
-    //         // TODO: Start a transaction
-
-    //         // TODO: Retrieve all items in order with given id
-    //         // TODO: Create a new shipment record.
-    //         // TODO: For each item verify sufficient quantity available in warehouse 1.
-    //         // TODO: If any item does not have sufficient inventory, cancel transaction and rollback. Otherwise, update inventory for each item.
-    //     } catch (err) {
-    //         console.dir(err);
-    //         res.write(err + "");
-    //         res.end();
-    //     }
-    // })();
 });

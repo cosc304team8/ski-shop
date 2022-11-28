@@ -116,7 +116,6 @@ router.use("/", function (req, res, next) {
         // res.end();
         res.render("template", {
             title: "List of Products",
-            pageTitle: "List of Products",
             content,
         });
     });

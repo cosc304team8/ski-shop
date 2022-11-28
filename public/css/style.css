@@ -103,7 +103,8 @@ th {
     padding: 1em;
 }
 
-.textbox {
+.textbox,
+.number {
     font-size: 1.2em;
     padding: 0.3em 0.5em;
     border: 0.01em solid #ccc;
@@ -111,10 +112,15 @@ th {
     margin: 0.25em;
 }
 
-.textbox:focus {
+.textbox:focus,
+.number:focus {
     outline: none;
     box-shadow: 0 0 0 0.05em #0066cc;
     border-color: #999;
+}
+
+.number {
+    width: 4em;
 }
 
 td .dropdown {
@@ -126,6 +132,11 @@ td .button {
 }
 
 .dropdown {
+    background: url(data:image/svg+xml;base64,PHN2ZyBpZD0iTGF5ZXJfMSIgZGF0YS1uYW1lPSJMYXllciAxIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA0Ljk1IDEwIj48ZGVmcz48c3R5bGU+LmNscy0ye2ZpbGw6IzQ0NDt9PC9zdHlsZT48L2RlZnM+PHRpdGxlPmFycm93czwvdGl0bGU+PHBvbHlnb24gY2xhc3M9ImNscy0yIiBwb2ludHM9IjEuNDEgNC42NyAyLjQ4IDMuMTggMy41NCA0LjY3IDEuNDEgNC42NyIvPjxwb2x5Z29uIGNsYXNzPSJjbHMtMiIgcG9pbnRzPSIzLjU0IDUuMzMgMi40OCA2LjgyIDEuNDEgNS4zMyAzLjU0IDUuMzMiLz48L3N2Zz4=)
+        no-repeat 95% 50%;
+    -moz-appearance: none;
+    -webkit-appearance: none;
+    appearance: none;
     font-size: 1.2em;
     padding: 0.3em 0.5em;
     border: 0.01em solid #ccc;
@@ -162,8 +173,7 @@ td .button {
 }
 
 .button:active {
-    /* background-color: #0052b3; */
-    background-color: red;
+    background-color: #0052b3;
     border-color: #b8b8b8;
     color: #ddd;
 }
@@ -217,6 +227,29 @@ td .button {
     text-align: center;
 }
 
+.list {
+    padding: 0.25em 0;
+    list-style: none;
+    width: max-content;
+}
+
+.list li {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    height: 3em;
+    padding: 0 0.5em;
+    border: 0.01em solid #ccc;
+    border-radius: 0.25em;
+    margin: 0.25em 0;
+}
+
+.list li .number {
+    margin: 0;
+    margin-right: 0.5em;
+}
+
 /*
     Product page
 */
@@ -225,6 +258,11 @@ td .button {
     min-width: 50%;
     max-width: 90%;
     margin: 0 auto;
+}
+
+.product .dropdown {
+    padding-right: 1em;
+    width: max-content;
 }
 
 .product img {
@@ -244,8 +282,11 @@ td .button {
     align-items: center;
 }
 
+.product-header h1 {
+    margin-right: 0.5em;
+}
+
 .desc {
-    margin: 0 1em;
     color: grey;
     font-style: italic;
 }
@@ -319,10 +360,14 @@ td .button {
     flex-direction: row;
     align-items: center;
     height: 2em;
-    background-color: black;
+    background-color: #0060bf;
     z-index: 0;
     padding: 0 0.5em;
     overflow: hidden;
+}
+
+.userGreeting a {
+    text-decoration: none;
 }
 
 /* 
@@ -351,4 +396,12 @@ td .button {
 
 .uploadForm td {
     padding: 0.5em;
+}
+
+.code {
+    color: white;
+    background: #888;
+    padding: 0.25em 0.5em;
+    border-radius: 0.33em;
+    line-height: 2em;
 }
