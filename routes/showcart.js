@@ -27,15 +27,15 @@ router.use("/", function (req, res, next) {
 
             content += `<td class="cell"><input form="updateCartForm" type="hidden" name="id" value="${product.id}"/><input form="updateCartForm" class="textbox" name="quantity" style="width: 4em; font-size: 12pt;" type="number" value="${product.quantity}" min="0" oninput="((target) => {target.value !== '${product.quantity}' ? target.classList.add('updated') : target.classList.remove('updated');})(this)"/></td>`;
 
-            content += `<td class="cell price">${sv.PRICE_FORMATTER.format(product.price)}</td>`;
-            content += `<td class="cell price">${sv.PRICE_FORMATTER.format(product.price * product.quantity)}</td>`;
+            content += `<td class="cell price">${sv.asPrice(product.price)}</td>`;
+            content += `<td class="cell price">${sv.asPrice(product.price * product.quantity)}</td>`;
             content += "</tr>";
             total = total + product.quantity * product.price;
         }
         content += `<tr>`;
         // content += `<td class="cell t-right" colspan="3"></td>`;
         content += `<td  class="cell" colspan="4" align="right"><b>Order Total:</b></td>`;
-        content += `<td class="cell price">${sv.PRICE_FORMATTER.format(total)}</td></tr>`;
+        content += `<td class="cell price">${sv.asPrice(total)}</td></tr>`;
         content += "</tbody>";
         content += "</table>";
 

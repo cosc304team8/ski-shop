@@ -1,0 +1,33 @@
+<div class="container">
+    <div class="flex-col">
+        <div class="flex-row">
+            <h1>
+                Administrator Portal
+            </h1>
+        </div>
+        <div class="flex-row">
+            <div class="flex-col">
+                <div class="column">
+                    <h2>Sales Report</h2>
+                    <p>Total sales/orders</p>
+                    {{#if salesReport}}
+                        <p>
+                            {{{salesReport}}}
+                        </p>
+                    {{/if}}
+                </div>
+            </div>
+            <div class="flex-col">
+                <div class="column">
+                    <h2>Customer List</h2>
+                    <p>Customer list table or whatever</p>
+                    {{#if customerTable}}
+                        <p>
+                            {{{customerTable}}}
+                        </p>
+                    {{/if}}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

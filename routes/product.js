@@ -66,7 +66,7 @@ const buildProductHTML = async (product, category, warehouseId) => {
 
     // Product metadata
     html += `<div class="product-meta">`;
-    html += `<h2>${sv.PRICE_FORMATTER.format(product.productPrice)}</h2>`;
+    html += `<h2>${sv.asPrice(product.productPrice)}</h2>`;
     html += `<span class="desc">${product.productDesc}</span>`;
     html += `</div>`;
 

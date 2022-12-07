@@ -117,11 +117,11 @@ const buildSummaryTable = (orderId, order, products) => {
             page += `<td class="cell">${p.id}</td>`;
             page += `<td class="cell">${p.name}</td>`;
             page += `<td class="cell">${p.quantity}</td>`;
-            page += `<td class="cell">${sv.PRICE_FORMATTER.format(p.price)}</td>`;
+            page += `<td class="cell">${sv.asPrice(p.price)}</td>`;
             page += `</tr>`;
         }
     }
-    page += `<tr><td class="cell t-right" colspan="3"><strong>Order Total:</strong></td><td class="cell"><strong>${sv.PRICE_FORMATTER.format(
+    page += `<tr><td class="cell t-right" colspan="3"><strong>Order Total:</strong></td><td class="cell"><strong>${sv.asPrice(
         order.totalAmount
     )}</strong></td></tr>`;
     page += `</tbody>`;

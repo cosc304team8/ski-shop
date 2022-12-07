@@ -67,16 +67,16 @@ const buildOrderTable = async (orders) => {
         table += `<th class="hcell">${o.customerName}</th>`;
         table += `<th class="hcell"></th>`;
         table += `<th class="hcell"></th>`;
-        table += `<th class="hcell">${sv.PRICE_FORMATTER.format(o.totalAmount)}</th>`;
+        table += `<th class="hcell">${sv.asPrice(o.totalAmount)}</th>`;
         table += "</tr>";
         for (let p of await getProductInfo(o.orderId)) {
             table += "<tr>";
             table += `<td class="cell"></td>`;
             table += `<td class="cell">${p.name}</td>`;
             table += `<td class="cell">${p.productDesc}</td>`;
-            table += `<td class="cell">${sv.PRICE_FORMATTER.format(p.price)}</td>`;
+            table += `<td class="cell">${sv.asPrice(p.price)}</td>`;
             table += `<td class="cell">${p.quantity}</td>`;
-            table += `<td class="cell">${sv.PRICE_FORMATTER.format(p.totalPrice)}</td>`;
+            table += `<td class="cell">${sv.asPrice(p.totalPrice)}</td>`;
             table += "</tr>";
         }
     }

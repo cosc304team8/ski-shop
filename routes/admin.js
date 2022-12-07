@@ -41,7 +41,7 @@ export const dailyOrderTable = (results, cols) => {
         table += "<tr>";
         for (let k of keys) {
             let value = r[k];
-            if (k.toUpperCase().indexOf("AMOUNT") > -1 || k.indexOf("$") > -1) value = sv.PRICE_FORMATTER.format(r[k]);
+            if (k.toUpperCase().indexOf("AMOUNT") > -1 || k.indexOf("$") > -1) value = sv.asPrice(r[k]);
 
             if (k.toUpperCase().indexOf("DATE") > -1) value = moment(r[k]).format("YYYY-MM-DD");
             table += `<td class="cell">${value}</td>`;

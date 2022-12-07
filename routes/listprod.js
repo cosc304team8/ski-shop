@@ -66,7 +66,7 @@ const createProductTable = (products, cols) => {
             }
             // If the key is a price, format it
             if (k.toUpperCase().indexOf("PRICE") > -1) {
-                v = sv.PRICE_FORMATTER.format(v);
+                v = sv.asPrice(v);
             }
 
             table += `<td class="cell${idCellClass}">${v}</td>`;

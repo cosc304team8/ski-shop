@@ -29,12 +29,20 @@ import * as index from "./routes/index.js";
 import * as upload from "./routes/upload.js";
 import bb from "express-busboy";
 
+// Lab 10
+import * as administrator from "./routes/administrator/index.js";
+
 // Export file paths
 export const __filename = fileURLToPath(import.meta.url);
 export const __dirname = path.dirname(__filename);
 
 export const app = express();
 const { engine } = exphb;
+
+// Utilities
+export const asPrice = (val) => {
+    return PRICE_FORMATTER.format(val);
+};
 
 // File handling for images
 const bbOptions = {
@@ -124,6 +132,9 @@ app.use("/customer", customer.router);
 app.use("/stock", stockWarehouse.router);
 app.use("/ship", shipment.router);
 app.use("/upload", upload.router);
+
+// Lab 10
+app.use("/administrator", administrator.router);
 
 // Starting our Express app
 app.listen(3000);
