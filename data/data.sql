@@ -131,14 +131,14 @@ CREATE TABLE IF NOT EXISTS review (
         ON UPDATE CASCADE ON DELETE CASCADE
 );
 
-INSERT INTO category(categoryName) VALUES ('Beverages');
-INSERT INTO category(categoryName) VALUES ('Condiments');
-INSERT INTO category(categoryName) VALUES ('Dairy Products');
-INSERT INTO category(categoryName) VALUES ('Produce');
-INSERT INTO category(categoryName) VALUES ('Meat/Poultry');
-INSERT INTO category(categoryName) VALUES ('Seafood');
-INSERT INTO category(categoryName) VALUES ('Confections');
-INSERT INTO category(categoryName) VALUES ('Grains/Cereals');
+INSERT INTO category(categoryName) VALUES ('Skis');
+INSERT INTO category(categoryName) VALUES ('Snowboards');
+-- INSERT INTO category(categoryName) VALUES ('Dairy Products');
+-- INSERT INTO category(categoryName) VALUES ('Produce');
+-- INSERT INTO category(categoryName) VALUES ('Meat/Poultry');
+-- INSERT INTO category(categoryName) VALUES ('Seafood');
+-- INSERT INTO category(categoryName) VALUES ('Confections');
+-- INSERT INTO category(categoryName) VALUES ('Grains/Cereals');
 
 
 INSERT INTO product(productName, categoryId, productDesc, productPrice, productImageURL) VALUES ('Völkl Kendo 88 Skis 2023', 1, '
