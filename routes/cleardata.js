@@ -2,14 +2,16 @@ import express from "express";
 import sql from "mysql2/promise";
 import moment from "moment";
 import fs from "fs";
+import { checkAuthentication } from "../auth.js";
 import * as sv from "../server.js";
 
 export const router = express.Router();
 
-const clearFromSQLFile = async (filename, res) => {
+const clearFromSQLFile = async (filename) => {
     let results = [];
     try {
         let pool = await sql.createPool(sv.dbPoolConfig);
+        await pool.query("SET FOREIGN_KEY_CHECKS = 0;");
         let data = fs.readFileSync(filename, { encoding: "utf8" });
         let commands = data.split(";");
         let c;
@@ -34,24 +36,25 @@ const clearFromSQLFile = async (filename, res) => {
     }
 };
 
-router.use("/", (req, res) => {
-    clearFromSQLFile("./data/clear.sql", res).then((v) => {
-        let content = "";
+router.use("/", async (req, res) => {
+    let authenticated = await checkAuthentication(req, res);
 
-        if (v.length > 0) {
-            content += `<h2>Data cleared successfully!</h2>`;
-        } else {
-            content += `<h2>No data to clear</h2>`;
-        }
+    let clearedData = await clearFromSQLFile("./data/clear.sql");
+    let content = "";
 
-        for (let r of v) {
-            content += r;
-        }
+    if (clearedData.length > 0) {
+        content += `<h2>Data cleared successfully!</h2>`;
+    } else {
+        content += `<h2>No data to clear</h2>`;
+    }
 
-        res.render("template", {
-            title: "Clear Database",
-            pageTitle: "Clear Database",
-            content,
-        });
+    for (let r of clearedData) {
+        content += r;
+    }
+
+    res.render("template", {
+        title: "Clear Database",
+        pageTitle: "Clear Database",
+        content,
     });
 });

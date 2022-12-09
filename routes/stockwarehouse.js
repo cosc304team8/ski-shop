@@ -81,7 +81,7 @@ const populateAllWarehouses = async (products) => {
                         } else {
                             let q = "INSERT INTO productinventory (warehouseId, productId, quantity, price) VALUES ?";
                             [rows] = await pool.query(q, [
-                                [[w.warehouseid, p.productId, getRandomInt(1, 100), parseFloat(p.productPrice)]],
+                                [[w.warehouseId, p.productId, getRandomInt(1, 100), parseFloat(p.productPrice)]],
                             ]);
                         }
                     }
