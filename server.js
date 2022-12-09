@@ -68,10 +68,10 @@ export const PRICE_FORMATTER = new Intl.NumberFormat("en-CA", {
 
 // This DB Config is accessible globally
 export const dbConfig = {
-    host: "host.docker.internal",
+    host: "157.230.69.100",
     user: "root",
-    password: "304rootpw",
-    database: "shopdb",
+    password: "N4MTeCeK56zHW9nBEkf3LQKP",
+    database: "alpine",
 };
 
 export const dbPoolConfig = {

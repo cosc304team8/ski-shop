@@ -1,4 +1,6 @@
-USE shopdb
+CREATE DATABASE IF NOT EXISTS alpine;
+
+USE alpine;
 
 -- DROP TABLE IF EXISTS review;
 -- DROP TABLE IF EXISTS shipment;
