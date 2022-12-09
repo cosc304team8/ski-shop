@@ -45,7 +45,7 @@ const buildOrderTable = async (orders) => {
     if (orders.length === 0) {
         return "<h2>No orders found.</h2>";
     }
-    let table = `<table class="table">`;
+    let table = `<table class="table rounded">`;
     // Header row
     table += "<thead>";
     table += "<tr>";

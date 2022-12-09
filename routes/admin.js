@@ -24,7 +24,7 @@ const getDailySalesAmount = async () => {
 };
 
 export const dailyOrderTable = (results, cols) => {
-    let table = `<table class="table">`;
+    let table = `<table class="table rounded">`;
     for (let i = 0; i < results.length; i++) {
         let r = results[i];
         let keys = Object.keys(r);

@@ -1,4 +1,4 @@
-FROM node:14.10.1
+FROM node:16.16.0
 
 WORKDIR /app
 
@@ -6,4 +6,6 @@ COPY package*.json ./
 
 RUN npm install
 
-CMD ["npm", "run", "start"]
+COPY . .
+
+CMD ["npm", "start"]

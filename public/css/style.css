@@ -65,10 +65,42 @@ th {
 .table {
     table-layout: fixed;
     display: table;
-    border-spacing: 0;
-    border: 0.01em solid #ccc;
-    border-radius: 0.25em;
+    border-collapse: collapse;
 }
+
+table.rounded {
+    /* Change these properties */
+    --border: 0.01em solid #ccc;
+    border-radius: 0.25em;
+
+    /* Don't change these properties */
+    border-spacing: 0;
+    border-collapse: separate;
+    border: var(--border);
+    overflow: hidden;
+}
+
+/* Apply a border to the right of all but the last column */
+table.rounded th:not(:last-child),
+table.rounded td:not(:last-child) {
+    border-right: var(--border);
+}
+
+/* Apply a border to the bottom of all but the last row */
+table.rounded > thead > tr:not(:last-child) > th,
+table.rounded > thead > tr:not(:last-child) > td,
+table.rounded > tbody > tr:not(:last-child) > th,
+table.rounded > tbody > tr:not(:last-child) > td,
+table.rounded > tfoot > tr:not(:last-child) > th,
+table.rounded > tfoot > tr:not(:last-child) > td,
+table.rounded > tr:not(:last-child) > td,
+table.rounded > tr:not(:last-child) > th,
+table.rounded > thead:not(:last-child),
+table.rounded > tbody:not(:last-child),
+table.rounded > tfoot:not(:last-child) {
+    border-bottom: var(--border);
+}
+
 .cell,
 .hcell {
     display: table-cell;
@@ -83,24 +115,23 @@ th {
     display: table-row;
 }
 
-.table tr:last-child td:first-child {
-    border-bottom-left-radius: 0.25em;
+.table {
 }
 
-.table tr:last-child td:last-child {
-    border-bottom-right-radius: 0.25em;
+table.rounded tr:last-child td:first-child {
+    border-bottom-left-radius: 0.2em;
 }
 
-.table thead {
-    border-radius: 0.25em;
+table.rounded tr:last-child td:last-child {
+    border-bottom-right-radius: 0.2em;
 }
 
-.table thead tr th:first-child {
-    border-top-left-radius: 0.25em;
+table.rounded tr:first-child th:first-child {
+    border-top-left-radius: 0.2em;
 }
 
-.table thead tr th:last-child {
-    border-top-right-radius: 0.25em;
+table.rounded tr:first-child th:last-child {
+    border-top-right-radius: 0.2em;
 }
 
 .container {

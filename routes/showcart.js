@@ -10,7 +10,7 @@ router.use("/", function (req, res, next) {
     if (req.session.productList) {
         productList = req.session.productList;
         content += "<h2>Your Shopping Cart</h2>";
-        content += `<table class="table">`;
+        content += `<table class="table rounded">`;
         content += `<thead><tr><th class="hcell">Product Id</th><th class="hcell">Product Name</th><th class="hcell">Quantity</th>`;
         content += `<th class="hcell">Price</th><th class="hcell">Subtotal</th></tr></thead>`;
 

@@ -5,7 +5,7 @@
     "repository": "https://github.com/cosc304team8/ski-shop.git",
     "main": "server.js",
     "scripts": {
-        "start": "nodemon server.js",
+        "start": "ls . -la && npm install && nodemon server.js",
         "test": "echo \"Error: no test specified\" && exit 1"
     },
     "author": "COSC 304 Team 8 2022W1",
@@ -24,13 +24,9 @@
         "node-fetch": "^3.3.0",
         "nodemon": "^2.0.20",
         "path": "^0.12.7",
+        "plotly": "^1.0.6",
+        "plotly.js": "^2.16.4",
         "tedious": "^15.1.1"
     },
-    "type": "module",
-    "devDependencies": {
-        "autoprefixer": "^10.4.13",
-        "postcss": "^8.4.19",
-        "postcss-cli": "^10.1.0",
-        "tailwindcss": "^3.2.4"
-    }
+    "type": "module"
 }

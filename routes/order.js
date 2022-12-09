@@ -105,7 +105,7 @@ const buildSummaryTable = (orderId, order, products) => {
     page += `<h2>Order ID: ${orderId}</h2>`;
     page += `<h2>Order Date: ${order.orderDate}</h2>`;
 
-    page += `<table class="table">`;
+    page += `<table class="table rounded">`;
     page += `<thead>`;
     page += `<tr><th class="hcell">ID</th><th class="hcell">Product</th><th class="hcell">Quantity</th><th class="hcell">Price</th></tr>`;
     page += `</thead>`;

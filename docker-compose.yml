@@ -1,11 +1,12 @@
 version: "3.7"
+name: cosc304team8
 services:
     mysqldb:
         image: mysql:8.0
         container_name: mysql
-        restart: unless-stopped
+        restart: always
         environment:
-            MYSQL_DATABASE: "testuser"
+            MYSQL_DATABASE: "shopdb"
             MYSQL_USER: "testuser"
             MYSQL_PASSWORD: "304testpw"
             MYSQL_ROOT_PASSWORD: "304rootpw"
@@ -14,16 +15,18 @@ services:
         expose:
             - "3306"
         volumes:
-            - cosc304-db:/var/lib/mysql
+            - db:/var/lib/mysql
             - ./ddl:/docker-entrypoint-initdb.d
     node:
+        container_name: lab10node
         depends_on:
             - mysqldb
         build:
             context: ./
             dockerfile: Dockerfile
         image: node-app
-        container_name: node-app
+        links:
+            - mysqldb
         volumes:
             - ./:/app/
             - /app/node_modules
@@ -35,6 +38,7 @@ services:
             - 80:3000
         tty: true
 volumes:
-    cosc304-db:
+    db:
+        driver: local
 networks:
     node-network:

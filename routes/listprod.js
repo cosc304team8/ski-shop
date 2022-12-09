@@ -43,7 +43,7 @@ const getListOfProducts = async (name, category = "%") => {
 // Returns a string of HTML based on input table
 const createProductTable = (products, cols) => {
     let keys = Object.keys(products[0]);
-    let table = `<table class="table">`;
+    let table = `<table class="table rounded">`;
     // Header row
     table += "<tr>";
     table += `<th class="hcell">+</th>`;

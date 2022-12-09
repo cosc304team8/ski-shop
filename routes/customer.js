@@ -23,7 +23,7 @@ const getCustomerById = async (userid, attr = []) => {
 };
 
 const buildCustomerInfoTable = (customer, cols = []) => {
-    let table = `<table class="table">`;
+    let table = `<table class="table rounded">`;
     let keys = Object.keys(customer);
     for (let i = 0; i < keys.length; i++) {
         let kh = keys[i];

@@ -1,10 +1,13 @@
 import express from "express";
 import sql from "mysql2/promise";
 import moment from "moment";
+import plotly from "plotly";
 import * as sv from "../../server.js";
 import { checkAuthentication } from "../../auth.js";
 
 export const router = express.Router();
+
+plotly("connordoman", "f7VRcgXbDfPtdJ6REx6q");
 
 // generate sales report html
 const getSalesData = async () => {
@@ -26,24 +29,22 @@ const getSalesData = async () => {
 };
 
 const generateSalesReport = (sales) => {
-    let table = `<table class="table" style="width: 100%;">`;
-    table += `<thead>`;
+    let table = `<table class="table rounded" style="width: 100%;">`;
     table += `<tr>`;
     table += `<th class="hcell">Date</th>`;
     table += `<th class="hcell">Number of Orders</th>`;
     table += `<th class="hcell">Total Revenue</th>`;
     table += `</tr>`;
-    table += `</thead>`;
 
-    table += `<tbody>`;
     for (let s of sales) {
         table += `<tr>`;
-        table += `<td class="cell">${moment(s.orderDate).format("YYYY/MM/DD [at] HH:mm:ss")}</td>`;
+        table += `<td class="cell" style="text-align: center;">${moment(s.orderDate).format(
+            "YYYY/MM/DD [at] HH:mm:ss"
+        )}</td>`;
         table += `<td class="cell">${s.numOrders}</td>`;
         table += `<td class="cell">${sv.asPrice(s.totalRevenue)}</td>`;
         table += `</tr>`;
     }
-    table += `</tbody>`;
 
     table += `</table>`;
     return table;
@@ -69,7 +70,7 @@ const getCustomerData = async () => {
 };
 
 const generateCustomerTable = async (customers) => {
-    let table = `<table class="table">`;
+    let table = `<table class="table rounded">`;
     table += `<tr>`;
 
     table += `<th class="hcell">ID</th>`;
@@ -126,6 +127,18 @@ router.get("/", async (req, res) => {
         // get customer data
         let customers = await getCustomerData();
         let customerTable = await generateCustomerTable(customers);
+
+        var data = [
+            {
+                x: ["2013-10-04 22:23:00", "2013-11-04 22:23:00", "2013-12-04 22:23:00"],
+                y: [1, 3, 6],
+                type: "scatter",
+            },
+        ];
+        var graphOptions = { filename: "date-axes", fileopt: "overwrite" };
+        plotly.plot(data, graphOptions, function (err, msg) {
+            console.log(msg);
+        });
 
         res.render("administrator", {
             title: "Administrator Portal",

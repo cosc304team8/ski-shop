@@ -143,7 +143,7 @@ app.listen(3000);
  * HTML Table Generator for MySQL
  */
 export const tableFromResults = (results, cols) => {
-    let table = `<table class="table">`;
+    let table = `<table class="table rounded">`;
     for (let i = 0; i < results.length; i++) {
         let r = results[i];
         let keys = Object.keys(r);
