@@ -1,13 +1,11 @@
 import express from "express";
 import sql from "mysql2/promise";
 import moment from "moment";
-import plotly from "plotly";
+import { spawn } from "child_process";
 import * as sv from "../../server.js";
 import { checkAuthentication } from "../../auth.js";
 
 export const router = express.Router();
-
-plotly("connordoman", "f7VRcgXbDfPtdJ6REx6q");
 
 // generate sales report html
 const getSalesData = async () => {
@@ -116,6 +114,22 @@ const buildAddressString = (street, city, state, postalCode, country) => {
     return addr;
 };
 
+const generateChartFromScript = async (location) => {
+    let pythonCall = spawn("python3", ["./scripts/testscript.py", location]);
+
+    return new Promise((resolveFunc) => {
+        pythonCall.stdout.on("data", (data) => {
+            console.log(data.toString());
+        });
+        pythonCall.stderr.on("data", (data) => {
+            console.error(data.toString());
+        });
+        pythonCall.on("exit", (code) => {
+            resolveFunc(code);
+        });
+    });
+};
+
 router.get("/", async (req, res) => {
     let authenticated = checkAuthentication(req, res);
 
@@ -128,17 +142,12 @@ router.get("/", async (req, res) => {
         let customers = await getCustomerData();
         let customerTable = await generateCustomerTable(customers);
 
-        var data = [
-            {
-                x: ["2013-10-04 22:23:00", "2013-11-04 22:23:00", "2013-12-04 22:23:00"],
-                y: [1, 3, 6],
-                type: "scatter",
-            },
-        ];
-        var graphOptions = { filename: "date-axes", fileopt: "overwrite" };
-        plotly.plot(data, graphOptions, function (err, msg) {
-            console.log(msg);
-        });
+        await generateChartFromScript("img/charts/sales_report.png");
+
+        salesReport += `<p>`;
+        salesReport += `<h2>Sales by Product Category</h2>`;
+        salesReport += `<img style="max-width: 80%;" src="/img/charts/sales_report.png" alt="Sales report chart" />`;
+        salesReport += `</p>`;
 
         res.render("administrator", {
             title: "Administrator Portal",
