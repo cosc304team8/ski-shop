@@ -144,15 +144,11 @@ router.get("/", async (req, res) => {
 
         await generateChartFromScript("img/charts/sales_report.png");
 
-        salesReport += `<p>`;
-        salesReport += `<h2>Sales by Product Category</h2>`;
-        salesReport += `<img style="max-width: 80%;" src="/img/charts/sales_report.png" alt="Sales report chart" />`;
-        salesReport += `</p>`;
-
         res.render("administrator", {
             title: "Administrator Portal",
             content: "<p>This is the administrator portal</p>",
             salesReport,
+            salesReportChart: "img/charts/sales_report.png",
             customerTable,
         });
     }

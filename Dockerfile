@@ -6,9 +6,14 @@ COPY package*.json ./
 
 RUN npm install
 
-RUN wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-aarch64.sh && \
-    bash Miniconda3-latest-Linux-aarch64.sh -b -p /opt/conda && \
-    rm Miniconda3-latest-Linux-aarch64.sh
+# Linux x64
+# ENV CONDA_PLATFORM=Miniconda3-latest-Linux-x86_64.sh
+# Linux ARM64
+ENV CONDA_PLATFORM=Miniconda3-latest-Linux-aarch64.sh
+
+RUN wget https://repo.anaconda.com/miniconda/${CONDA_PLATFORM} && \
+    bash ${CONDA_PLATFORM} -b -p /opt/conda && \
+    rm ${CONDA_PLATFORM}
 
 ENV PATH /opt/conda/bin:$PATH
 

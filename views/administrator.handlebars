@@ -14,6 +14,12 @@
                         <p>
                             {{{salesReport}}}
                         </p>
+                        {{#if salesReportChart}}
+                            <p>
+                                <h2>Sales by Product Category</h2>
+                                <img style="max-width: 80%;" src="{{salesReportChart}}" alt="Sales report chart" />
+                            </p>
+                        {{/if}}
                     {{/if}}
                 </div>
             </div>
