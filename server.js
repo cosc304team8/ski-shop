@@ -13,6 +13,7 @@ import * as showCart from "./routes/showcart.js";
 import * as checkout from "./routes/checkout.js";
 import * as order from "./routes/order.js";
 import * as clearData from "./routes/cleardata.js";
+import * as recommend from "./routes/recommend.js";
 
 // Lab 8
 import bodyParser from "body-parser";
@@ -28,6 +29,7 @@ import * as shipment from "./routes/ship.js";
 import * as index from "./routes/index.js";
 import * as upload from "./routes/upload.js";
 import bb from "express-busboy";
+
 
 // Export file paths
 export const __filename = fileURLToPath(import.meta.url);
@@ -111,6 +113,7 @@ app.use("/showcart", showCart.router);
 app.use("/checkout", checkout.router);
 app.use("/order", order.router);
 app.use("/cleardata", clearData.router);
+app.use("/recommend", recommend.router);
 
 // Lab 8
 app.use("/", index.router);
