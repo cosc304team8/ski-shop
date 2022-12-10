@@ -35,5 +35,81 @@
                 </div>
             </div>
         </div>
+        <div class="flex-col">
+            <h2>Add New Product</h2>
+            <form class="form" name="addProductForm" method="POST" action="/addproduct" enctype="multipart/form-data">
+                <table class="table rounded">
+                    <tr>
+                        <td class="cell">
+                            <h3>Name</h3>
+                        </td>
+                        <td class="cell">
+                            <input
+                                class="textbox"
+                                type="text"
+                                id="productName"
+                                name="productName"
+                                required="required"
+                            />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="cell">
+                            <h3>Description</h3>
+                        </td>
+                        <td class="cell">
+                            <textarea
+                                class="textbox"
+                                type="text"
+                                id="productDesc"
+                                name="productDesc"
+                                required="required"
+                            ></textarea>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="cell">
+                            <h3>Price</h3>
+                        </td>
+                        <td class="cell">
+                            <input
+                                class="textbox"
+                                type="number"
+                                id="productPrice"
+                                name="productPrice"
+                                required="required"
+                            />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="cell">
+                            <input class="button" type="button" id="uploadButton" value="PNG/JPEG" />
+                        </td>
+                        <td class="cell">
+                            <label id="productImageLabel" for="uploadButton">
+                                Upload a product image...
+                            </label>
+
+                            <input
+                                class="textbox"
+                                type="file"
+                                id="productImage"
+                                name="productImage"
+                                accept="image/png, image/jpeg"
+                                required="required"
+                            />
+                            <br />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="cell" colspan="2">
+                            <input class="button" type="submit" id="submitupload" name="submitupload" value="Upload" />
+                        </td>
+                    </tr>
+                </table>
+            </form>
+            <script src="/scripts/uploadbutton.js">
+            </script>
+        </div>
     </div>
 </div>

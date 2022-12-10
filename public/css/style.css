@@ -126,11 +126,13 @@ table.rounded tr:last-child td:last-child {
     border-bottom-right-radius: 0.2em;
 }
 
-table.rounded tr:first-child th:first-child {
+table.rounded tr:first-child th:first-child,
+table.rounded tr:first-child td:first-child {
     border-top-left-radius: 0.2em;
 }
 
-table.rounded tr:first-child th:last-child {
+table.rounded tr:first-child th:last-child,
+table.rounded tr:first-child td:last-child {
     border-top-right-radius: 0.2em;
 }
 
@@ -146,6 +148,7 @@ table.rounded tr:first-child th:last-child {
     border: 0.01em solid #ccc;
     border-radius: 0.25em;
     margin: 0.25em;
+    width: 16em;
 }
 
 .textbox:focus,
@@ -336,6 +339,7 @@ td .button {
     flex-direction: row;
     justify-content: flex-start;
     align-items: center;
+    margin: 0.5em 0;
 }
 
 .product-meta .desc {
@@ -469,4 +473,18 @@ td .button {
 
 .column {
     margin: 0 1em;
+}
+
+.table .button {
+    margin: 0;
+}
+
+.cell h3 {
+    margin: 0;
+    text-align: left;
+}
+
+textarea.textbox {
+    height: 10em;
+    resize: none;
 }

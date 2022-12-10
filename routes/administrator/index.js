@@ -99,6 +99,17 @@ const generateCustomerTable = async (customers) => {
     return table;
 };
 
+const generateAddProductForm = async () => {
+    let form = `<form action="/administrator/add-product" method="post">`;
+    form += `<input type="text" name="name" placeholder="Product Name" />`;
+    form += `<input type="text" name="price" placeholder="Price" />`;
+    form += `<input type="text" name="description" placeholder="Description" />`;
+    form += `<input type="file" name="image" value="Product Image" />`;
+
+    form += `</form>`;
+    return form;
+};
+
 const buildNameString = (firstName, lastName) => {
     return `${firstName} ${lastName}`;
 };
@@ -115,7 +126,7 @@ const buildAddressString = (street, city, state, postalCode, country) => {
 };
 
 const generateChartFromScript = async (location) => {
-    let pythonCall = spawn("python3", ["./scripts/testscript.py", location]);
+    let pythonCall = spawn("python3", ["./scripts/sales_report_graph.py", location]);
 
     return new Promise((resolveFunc) => {
         pythonCall.stdout.on("data", (data) => {

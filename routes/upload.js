@@ -111,7 +111,7 @@ const processFileUpload = async (req) => {
     return { success, error };
 };
 
-const getFileFromRequest = (req) => {
+export const getFileFromRequest = (req) => {
     let productImage = req.files.productImage.file;
 
     if (!productImage) {

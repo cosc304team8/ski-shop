@@ -63,7 +63,7 @@ const buildOrderTable = async (orders) => {
     for (let o of orders) {
         table += "<tr>";
         table += `<th class="hcell"><a href="/listorder?id=${o.orderId}">${o.orderId}</a></button></th>`;
-        table += `<th class="hcell">${moment(o.orderDate).format("MMM Do YYYY")}</th>`;
+        table += `<th class="hcell">${moment(o.orderDate).format("MMM[&nbsp;]Do[&nbsp;]YYYY")}</th>`;
         table += `<th class="hcell">${o.customerName}</th>`;
         table += `<th class="hcell"></th>`;
         table += `<th class="hcell"></th>`;

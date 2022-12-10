@@ -130,7 +130,9 @@ const createSelectFromList = (list) => {
         select += `<option value="${item.qty}">${item.qty}</option>`;
     }
     select += `</select>`;
-    select += `<span class="desc">in warehouse ${list[0].warehouse}</span>`;
+    if (list[0]) {
+        select += `<span class="desc">in warehouse ${list[0].warehouse}</span>`;
+    }
     return select;
 };
 

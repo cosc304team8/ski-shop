@@ -4,7 +4,7 @@ import * as sv from "../server.js";
 
 export const router = express.Router();
 
-const getCategoryList = async (pool) => {
+export const getCategoryList = async (pool) => {
     try {
         let [rows, fields] = await pool.query("SELECT categoryName FROM category;");
         return rows;
@@ -53,7 +53,7 @@ const createProductTable = (products, cols) => {
     // Data rows
     for (let p of products) {
         table += "<tr>";
-        table += `<td class="cell"><span class="link"><a href="/addcart?id=${p.productId}&name=${p.productName}&price=${p.productPrice}">Add to cart</a></span></td>`;
+        table += `<td class="cell"><span class="link"><a href="/addcart?id=${p.productId}&name=${p.productName}&price=${p.productPrice}">Add&nbsp;to&nbsp;cart</a></span></td>`;
         for (let k of keys) {
             let v = p[k];
             let idCellClass = "";
