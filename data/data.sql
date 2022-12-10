@@ -1,4 +1,4 @@
-USE shopdb
+USE alpine
 
 -- DROP TABLE IF EXISTS review;
 -- DROP TABLE IF EXISTS shipment;
