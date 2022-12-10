@@ -17,6 +17,7 @@ import * as clearData from "./routes/cleardata.js";
 // Lab 8
 import bodyParser from "body-parser";
 import * as product from "./routes/product.js";
+import * as recommend from "./routes/recommend.js";
 import * as displayImage from "./routes/displayImage.js";
 import * as login from "./routes/login.js";
 import * as validateLogin from "./routes/validateLogin.js";
@@ -124,6 +125,7 @@ app.use("/customer", customer.router);
 app.use("/stock", stockWarehouse.router);
 app.use("/ship", shipment.router);
 app.use("/upload", upload.router);
+app.use("/recommend", recommend.router);
 
 // Starting our Express app
 app.listen(3000);
