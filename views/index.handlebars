@@ -13,29 +13,7 @@
     </div>
     {{#if authenticatedUser}}
         <h3>Since you're logged in...</h3>
-        <ul class="list">
-            <li>
-                <span class="link"><a href="/upload">Upload a product image</a></span>
-            </li>
-            <li>
-                <span class="link"><a href="/customer">View your customer profile</a></span>
-            </li>
-            <li>
-                <span class="link"><a href="/admin">View orders summary</a></span>
-            </li>
-            <li>
-                <form id="shipform" class="form" action="/ship" method="GET"><input
-                        class="number"
-                        type="number"
-                        name="orderId"
-                        min="0"
-                        value="1"
-                    /><span class="link"><a
-                            href="javascript:{}"
-                            onclick="document.getElementById('shipform').submit();"
-                        >Ship order number</a></span></form>
-            </li>
-        </ul>
+        <h3><span class="link"><a href="/administrator">View the administrator portal</a></span></h3>
     {{else}}
         <p class="para">
             <span class="link"><a href="/login">Click here to login.</a></span>

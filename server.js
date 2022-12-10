@@ -32,6 +32,7 @@ import bb from "express-busboy";
 // Lab 10
 import * as administrator from "./routes/administrator/index.js";
 import * as addproduct from "./routes/administrator/addproduct.js";
+import * as deleteproduct from "./routes/administrator/deleteproduct.js";
 
 // Export file paths
 export const __filename = fileURLToPath(import.meta.url);
@@ -137,6 +138,7 @@ app.use("/upload", upload.router);
 // Lab 10
 app.use("/administrator", administrator.router);
 app.use("/addproduct", addproduct.router);
+app.use("/deleteproduct", deleteproduct.router);
 
 // Starting our Express app
 app.listen(3000);

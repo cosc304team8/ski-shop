@@ -35,81 +35,160 @@
                 </div>
             </div>
         </div>
-        <div class="flex-col">
-            <h2>Add New Product</h2>
-            <form class="form" name="addProductForm" method="POST" action="/addproduct" enctype="multipart/form-data">
-                <table class="table rounded">
-                    <tr>
-                        <td class="cell">
-                            <h3>Name</h3>
-                        </td>
-                        <td class="cell">
-                            <input
-                                class="textbox"
-                                type="text"
-                                id="productName"
-                                name="productName"
-                                required="required"
-                            />
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="cell">
-                            <h3>Description</h3>
-                        </td>
-                        <td class="cell">
-                            <textarea
-                                class="textbox"
-                                type="text"
-                                id="productDesc"
-                                name="productDesc"
-                                required="required"
-                            ></textarea>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="cell">
-                            <h3>Price</h3>
-                        </td>
-                        <td class="cell">
-                            <input
-                                class="textbox"
-                                type="number"
-                                id="productPrice"
-                                name="productPrice"
-                                required="required"
-                            />
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="cell">
-                            <input class="button" type="button" id="uploadButton" value="PNG/JPEG" />
-                        </td>
-                        <td class="cell">
-                            <label id="productImageLabel" for="uploadButton">
-                                Upload a product image...
-                            </label>
+        <div class="flex-row">
 
-                            <input
-                                class="textbox"
-                                type="file"
-                                id="productImage"
-                                name="productImage"
-                                accept="image/png, image/jpeg"
-                                required="required"
-                            />
-                            <br />
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="cell" colspan="2">
-                            <input class="button" type="submit" id="submitupload" name="submitupload" value="Upload" />
-                        </td>
-                    </tr>
-                </table>
-            </form>
-            <script src="/scripts/uploadbutton.js">
-            </script>
+            <div class="flex-col">
+                <h2>Add New Product</h2>
+                <form
+                    class="form"
+                    name="addProductForm"
+                    method="POST"
+                    action="/addproduct"
+                    enctype="multipart/form-data"
+                >
+                    <table class="table rounded">
+                        <tr>
+                            <td class="cell">
+                                <h3>Name</h3>
+                            </td>
+                            <td class="cell">
+                                <input
+                                    class="textbox"
+                                    type="text"
+                                    id="productName"
+                                    name="productName"
+                                    required="required"
+                                />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="cell">
+                                <h3>Description</h3>
+                            </td>
+                            <td class="cell">
+                                <textarea
+                                    class="textbox"
+                                    type="text"
+                                    id="productDesc"
+                                    name="productDesc"
+                                    required="required"
+                                ></textarea>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="cell">
+                                <h3>Price</h3>
+                            </td>
+                            <td class="cell">
+                                <input
+                                    class="textbox"
+                                    type="number"
+                                    id="productPrice"
+                                    name="productPrice"
+                                    required="required"
+                                />
+                            </td>
+                        </tr>
+                        {{#if categorySelector}}
+                            <tr>
+                                <td class="cell">
+                                    <h3>Category</h3>
+                                </td>
+                                <td class="cell">
+                                    {{{categorySelector}}}
+                                </td>
+                            </tr>
+                        {{/if}}
+                        <tr>
+                            <td class="cell">
+                                <input class="button" type="button" id="uploadButton" value="PNG/JPEG" />
+                            </td>
+                            <td class="cell">
+                                <label id="productImageLabel" for="uploadButton">
+                                    Upload a product image...
+                                </label>
+
+                                <input
+                                    class="textbox"
+                                    type="file"
+                                    id="productImage"
+                                    name="productImage"
+                                    accept="image/png, image/jpeg"
+                                    required="required"
+                                />
+                                <br />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="cell" colspan="2">
+                                <input
+                                    class="button"
+                                    type="submit"
+                                    id="submitupload"
+                                    name="submitupload"
+                                    value="Upload"
+                                />
+                            </td>
+                        </tr>
+                    </table>
+                </form>
+                <script src="/scripts/uploadbutton.js">
+                </script>
+            </div>
+            <div class="flex-col">
+                <div class="column">
+                    <h2 id="options">Other Administrator Options</h2>
+                    <ul class="list" style="width: 100%;">
+                        <li>
+                            <span class="link"><a href="/upload">Upload a product image</a></span>
+                        </li>
+                        <li>
+                            <span class="link"><a href="/customer">View your customer profile</a></span>
+                        </li>
+                        <li>
+                            <span class="link"><a href="/admin">View orders summary</a></span>
+                        </li>
+                        {{#if orderSelector}}
+                            <li>
+                                <form id="shipform" class="form" action="/ship" method="GET">
+                                    {{{orderSelector}}}
+                                    <span class="link" style="margin: 0 0.25em"><a
+                                            href="javascript:{}"
+                                            onclick="document.getElementById('shipform').submit();"
+                                        >Ship&nbsp;order&nbsp;number</a></span></form>
+                            </li>
+                        {{/if}}
+                        {{#if productSelector}}
+                            <li>
+                                <form id="deleteform" class="form" action="/deleteproduct" method="POST">
+                                    {{{productSelector}}}
+                                    <span class="link" style="margin: 0 0.25em"><a
+                                            href="javascript:{}"
+                                            onclick="document.getElementById('deleteform').submit();"
+                                        >Delete&nbsp;product</a></span></form>
+                            </li>
+                        {{/if}}
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <br />
+        <div class="flex-row">
+            <div class="flex-col">
+                <h2>Load Products Into Database</h2>
+                <p><code>/data/data.sql</code></p>
+                <p><span class="link"><a href="/loaddata">Load Database</a></span></p>
+            </div>
+            <div class="flex-col">
+                <h2>Clear Database</h2>
+                <p><code>/data/clear.sql</code></p>
+                <p><span class="link"><a href="/cleardata">Clear Database</a></span></p>
+            </div>
+            <div class="flex-col">
+                <h2>Stock Products</h2>
+                <p><code>Randomize stock and prepare warehouses</code></p>
+                <p><span class="link"><a href="/stock">Stock Warehouses</a></span></p>
+            </div>
         </div>
     </div>
 </div>

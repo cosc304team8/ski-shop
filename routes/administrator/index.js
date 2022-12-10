@@ -99,17 +99,6 @@ const generateCustomerTable = async (customers) => {
     return table;
 };
 
-const generateAddProductForm = async () => {
-    let form = `<form action="/administrator/add-product" method="post">`;
-    form += `<input type="text" name="name" placeholder="Product Name" />`;
-    form += `<input type="text" name="price" placeholder="Price" />`;
-    form += `<input type="text" name="description" placeholder="Description" />`;
-    form += `<input type="file" name="image" value="Product Image" />`;
-
-    form += `</form>`;
-    return form;
-};
-
 const buildNameString = (firstName, lastName) => {
     return `${firstName} ${lastName}`;
 };
@@ -141,6 +130,70 @@ const generateChartFromScript = async (location) => {
     });
 };
 
+const generateCateogorySelect = async () => {
+    let result = "";
+
+    try {
+        let pool = await sql.createPool(sv.dbPoolConfig);
+
+        let [rows] = await pool.query("SELECT * FROM category");
+
+        result = `<select name="category" class="dropdown">`;
+        for (let i = 0; i < rows.length; i++) {
+            result += `<option value="${rows[i].categoryId}">${rows[i].categoryName}</option>`;
+        }
+        result += `</select>`;
+    } catch (err) {
+        console.error(err);
+    }
+
+    return result;
+};
+
+const getOrderSelector = async () => {
+    let result = "";
+
+    try {
+        let pool = await sql.createPool(sv.dbPoolConfig);
+
+        let [rows] = await pool.query("SELECT orderId FROM ordersummary ORDER BY orderId ASC");
+
+        result = `<select name="orderId" class="dropdown">`;
+        for (let i = 0; i < rows.length; i++) {
+            result += `<option value="${rows[i].orderId}">${rows[i].orderId}</option>`;
+        }
+        result += `</select>`;
+
+        pool.end();
+    } catch (err) {
+        console.error(err);
+    }
+
+    return result;
+};
+
+const getProductSelector = async () => {
+    let result = "";
+
+    try {
+        let pool = await sql.createPool(sv.dbPoolConfig);
+
+        let [rows] = await pool.query("SELECT productId, productName FROM product ORDER BY productId ASC");
+
+        result = `<select name="productId" class="dropdown">`;
+        for (let i = 0; i < rows.length; i++) {
+            result += `<option value="${rows[i].productId}">${rows[i].productName}</option>`;
+        }
+        result += `</select>`;
+
+        pool.end();
+    } catch (err) {
+        console.error(err);
+    }
+
+    return result;
+};
+
 router.get("/", async (req, res) => {
     let authenticated = checkAuthentication(req, res);
 
@@ -161,6 +214,9 @@ router.get("/", async (req, res) => {
             salesReport,
             salesReportChart: "img/charts/sales_report.png",
             customerTable,
+            categorySelector: await generateCateogorySelect(),
+            orderSelector: await getOrderSelector(),
+            productSelector: await getProductSelector(),
         });
     }
 });

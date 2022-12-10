@@ -163,7 +163,7 @@ table.rounded tr:first-child td:last-child {
 }
 
 td .dropdown {
-    width: 100%;
+    width: 16em;
 }
 
 td .button {
@@ -481,10 +481,22 @@ td .button {
 
 .cell h3 {
     margin: 0;
-    text-align: left;
+    text-align: right;
 }
 
 textarea.textbox {
     height: 10em;
     resize: none;
+}
+
+code {
+    color: white;
+    background: #444;
+    padding: 0.25em 0.5em;
+    border-radius: 0.33em;
+    line-height: 2em;
+}
+
+.list {
+    width: 100%;
 }
