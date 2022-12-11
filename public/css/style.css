@@ -8,25 +8,16 @@ body {
     margin: 0;
     padding: 0;
 }
-/* table {
-    border-collapse: collapse;
-    width: 100%;
+
+main {
+    margin-bottom: 1.5em;
 }
-td,
-th {
-    border: 0.01em solid #ccc;
-    padding: 0.5em;
-}
-th {
-    background-color: #f4f4f4;
-    text-align: center;
-} */
 
 .header {
     font-family: sans-serif;
     position: sticky;
     top: 0;
-    background-color: #f4f4f4;
+    background-color: #f0f0f0;
     padding: 0.5em;
     text-align: center;
     box-shadow: 0 0 1em 0 rgba(0, 0, 0, 0.1);
@@ -499,4 +490,26 @@ code {
 
 .list {
     width: 100%;
+}
+
+.footer {
+    font-size: 10pt;
+    font-family: "Arial", sans-serif;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    height: 2em;
+    border-top: 0.01em solid #ccc;
+    position: fixed;
+    bottom: 0;
+    background-color: #f0f0f0;
+}
+
+.footer p {
+    margin: 0 0.5em;
 }

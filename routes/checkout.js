@@ -25,4 +25,3 @@ router.use("/", (req, res) => {
 });
 
 export default router;
-// module.exports = router;

@@ -2,6 +2,7 @@ import express from "express";
 import sql from "mysql2/promise";
 import moment from "moment";
 import * as sv from "../server.js";
+import { checkAuthentication } from "../auth.js";
 
 export const router = express.Router();
 
@@ -85,23 +86,23 @@ const buildOrderTable = async (orders) => {
     return table;
 };
 
-router.use("/", (req, res) => {
+router.use("/", async (req, res) => {
     let content = "";
 
     let orderId = req.query.id;
 
-    getListOfOrders(orderId).then((orders) => {
-        buildOrderTable(orders).then((table) => {
-            content += table;
+    let orders = await getListOfOrders(orderId);
 
-            res.render("template", {
-                title: "Orders",
-                pageTitle: "Orders",
-                content,
-            });
-        });
+    if (orders) {
+        console.log("orders: ", orders);
+        content = await buildOrderTable(orders);
+    }
+
+    res.render("template", {
+        title: "Orders",
+        pageTitle: "Orders",
+        content,
     });
 });
 
 export default router;
-// module.exports = router;
