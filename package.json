@@ -24,7 +24,7 @@
         "node-fetch": "^3.3.0",
         "nodemon": "^2.0.20",
         "path": "^0.12.7",
-        "tedious": "^15.1.1"
+        "tedious": "^11.0.8"
     },
     "type": "module"
 }
